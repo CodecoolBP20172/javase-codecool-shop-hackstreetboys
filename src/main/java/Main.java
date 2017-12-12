@@ -1,6 +1,7 @@
 import static spark.Spark.*;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
+import com.codecool.shop.controller.OrderController;
 import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.*;
 import com.codecool.shop.dao.implementation.*;
@@ -31,6 +32,9 @@ public class Main {
            return new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res) );
         });
         get("/filter", ProductController::renderProductsByFilter, new ThymeleafTemplateEngine());
+
+        //get("/addcart/:prod.id", (req, res) -> req.headers("Referer"));
+        get("/addcart/:prod.id", OrderController::renderOrder);
 
         // Add this line to your project to enable the debug screen
         enableDebugScreen();
