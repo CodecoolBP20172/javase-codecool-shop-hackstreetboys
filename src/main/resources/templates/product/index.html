@@ -35,15 +35,15 @@
 
 <div class="container">
 
-    <form action="/filter" method="POST">
-        <select>
-            <option selected="selected">All Categories</option>
+    <form action="/filter" method="GET">
+        <select name="categoryFilter">
+            <option>All Categories</option>
             <div class="well well-sm" th:each="category : ${categories}">
                 <option th:text="${category.getName()}">Category Title</option>
             </div>
         </select>
-        <select>
-            <option selected="selected">All Suppliers</option>
+        <select name="supplierFilter">
+            <option>All Suppliers</option>
             <div class="well well-sm" th:each="supplier : ${suppliers}">
                 <option th:text="${supplier.getName()}">Supplier Title</option>
             </div>
