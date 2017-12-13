@@ -8,7 +8,6 @@ public class Order extends BaseModel {
 
 
     private HashMap<Product, Integer> products = new HashMap<>();
-    private static Order instance = null;
     private Integer userId;
     private Integer numberOfProducts = 0;
 
@@ -16,15 +15,12 @@ public class Order extends BaseModel {
     public Order(Integer userId) {
         super("order");
         this.userId = userId;
+        OrderDaoMem.getInstance().add(this);
     }
 
 
     public void add(Product product) {
-        if (products.get(product) == null) {
-            products.put(product, 1);
-        } else {
-            products.put(product, products.get(product) + 1);
-        }
+        products.merge(product, 1, (a, b) -> a + b);
         numberOfProducts++;
     }
 

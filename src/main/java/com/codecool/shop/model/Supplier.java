@@ -1,5 +1,7 @@
 package com.codecool.shop.model;
 
+import com.codecool.shop.dao.implementation.SupplierDaoMem;
+
 import java.util.ArrayList;
 
 
@@ -9,6 +11,7 @@ public class Supplier extends BaseModel {
     public Supplier(String name, String description) {
         super(name);
         this.products = new ArrayList<>();
+        SupplierDaoMem.getInstance().add(this);
     }
 
     public void setProducts(ArrayList<Product> products) {

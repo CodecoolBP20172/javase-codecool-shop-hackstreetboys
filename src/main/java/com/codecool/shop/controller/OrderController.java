@@ -19,18 +19,14 @@ import java.util.Map;
 
 public class OrderController {
 
-    public static ModelAndView renderOrder(Request req, Response res, Integer userId) {
+    public static Object renderOrder(Request req, Response res, Integer userId) {
 
-        Integer productId = Integer.valueOf(req.params(":prod.id"));
+        Integer productId = Integer.valueOf(req.queryParams("productId"));
         Product product = ProductDaoMem.getInstance().find(productId);
         Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
         order.add(product);
 
-        Integer products = order.getNumberOfProducts();
-
-        String path = req.headers("Referer");
-        res.redirect(path);
-        return null;
+        return order.getNumberOfProducts();
     }
 
 }

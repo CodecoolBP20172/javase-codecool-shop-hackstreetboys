@@ -5,26 +5,24 @@ import com.codecool.shop.model.Order;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderDaoMem implements OrderDao {
 
 
     private List<Order> DATA = new ArrayList<>();
-    private static OrderDaoMem instance = null;
+    private static final OrderDaoMem instance = new OrderDaoMem();
 
     private OrderDaoMem() {
     }
 
     public static OrderDaoMem getInstance() {
-        if (instance == null) {
-            instance = new OrderDaoMem();
-        }
         return instance;
     }
 
     public Order getOrderForUser(Integer userId) {
         for (Order order : OrderDaoMem.getInstance().getAll()) {
-            if (order.getUserId() == userId) {
+            if (Objects.equals(order.getUserId(), userId)) {
                 return order;
             }
         }
