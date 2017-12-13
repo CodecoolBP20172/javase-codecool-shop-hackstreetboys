@@ -8,6 +8,7 @@ import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
 import spark.ModelAndView;
 import spark.Request;
@@ -18,24 +19,15 @@ import java.util.Map;
 
 public class OrderController {
 
-    public static ModelAndView renderOrder(Request req, Response res) {
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        //ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        //SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
+    public static ModelAndView renderOrder(Request req, Response res, Integer userId) {
 
         Integer productId = Integer.valueOf(req.params(":prod.id"));
-        Product productToAddCart = productDataStore.find(productId);
-        orderDataStore.add(productToAddCart);
-        //System.out.println(orderDataStore.getAll().get(productToAddCart));
-        System.out.println(orderDataStore.getAll());
+        Product product = ProductDaoMem.getInstance().find(productId);
+        Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
+        order.add(product);
 
-        /*Map params = new HashMap<>();
-        params.put("categories", productCategoryDataStore.getAll());
-        params.put("suppliers", supplierDataStore.getAll());
-        params.put("products", productDataStore.getAll());
-        params.put("orderItems", orderDataStore.getAll());*/
-        //return new ModelAndView(params, "product/index");
+        Integer products = order.getNumberOfProducts();
+
         String path = req.headers("Referer");
         res.redirect(path);
         return null;

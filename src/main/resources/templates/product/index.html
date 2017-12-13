@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
@@ -51,7 +52,12 @@
         <button name="OK" type="submit">ok</button>
     </form>
 
-
+    <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+    <!--<div th:if="${order.getValue() != null}">
+        <div th:text="${order.getValue()}"></div></div>
+    <div th:unless="${order.keySet}">
+        <div>No items in the cart</div>
+    </div>-->
     <div id="products" class="row list-group">
 
         <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products} ">

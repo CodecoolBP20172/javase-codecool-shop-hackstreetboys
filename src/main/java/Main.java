@@ -22,6 +22,8 @@ public class Main {
         // populate some data for the memory storage
         populateData();
 
+        Integer userId = 0;
+
         // Always start with more specific routes
         get("/hello", (req, res) -> "Hello World");
 
@@ -33,9 +35,10 @@ public class Main {
         });
         get("/filter", ProductController::renderProductsByFilter, new ThymeleafTemplateEngine());
 
-        //get("/addcart/:prod.id", (req, res) -> req.headers("Referer"));
-        get("/addcart/:prod.id", OrderController::renderOrder);
 
+        get("/addcart/:prod.id", (Request req, Response res) -> {
+            return new ThymeleafTemplateEngine().render( OrderController.renderOrder(req, res, userId) );
+        });
         // Add this line to your project to enable the debug screen
         enableDebugScreen();
     }
