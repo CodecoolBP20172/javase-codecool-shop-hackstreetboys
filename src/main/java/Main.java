@@ -26,21 +26,16 @@ public class Main {
 
         // Always add generic routes to the end
         get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
+
         // Equivalent with above
         get("/index", (Request req, Response res) -> {
            return new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res) );
         });
 
-
-        //get("/filter", ProductController::renderProductsByFilter, new ThymeleafTemplateEngine());
-
         post("/filter", (Request req, Response res) -> {
-            System.out.println("received post");
-            System.out.println(req.queryParams("categoryFilter"));
-            System.out.println(req.queryParams("supplierFilter"));
-            return new ThymeleafTemplateEngine().render( ProductController.renderProductsByFilterAgain(req, res) );
+            return new ThymeleafTemplateEngine().render( ProductController.renderProductsByFilter(req, res) );
                 });
-        // Add this line to your project to enable the debug screen
+
         enableDebugScreen();
     }
 
