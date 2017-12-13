@@ -24,7 +24,6 @@ public class ProductController {
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
-
         Map params = new HashMap<>();
         params.put("categories", productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
@@ -33,6 +32,7 @@ public class ProductController {
     }
 
     public static ModelAndView renderProductsByFilter(Request req, Response res) {
+
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
@@ -40,23 +40,19 @@ public class ProductController {
         List<Product> products = new ArrayList<>(productDataStore.getAll());
 
         for (Product product : productDataStore.getAll()) {
-            System.out.println("ASDSASDASDASDD");
             if ( (!Objects.equals(product.getSupplier().getName(), req.queryParams("supplierFilter")))
                     && (!Objects.equals(req.queryParams("supplierFilter"), "All Suppliers")) ) {
                 products.remove(product);
-                System.out.println(products);
-                System.out.println(req.queryParams("supplierFilter"));
                 continue;
             }
 
             if ( (!Objects.equals(product.getProductCategory().getName(), req.queryParams("categoryFilter")))
                     && (!Objects.equals(req.queryParams("categoryFilter"), "All Categories")) ) {
                 products.remove(product);
-                System.out.println("categoryFilter");
             }
         }
 
-        System.out.println(products);
+        System.out.println(req.queryParams("categoryFilter"));
 
         Map params = new HashMap<>();
         params.put("categories", productCategoryDataStore.getAll());
@@ -64,5 +60,36 @@ public class ProductController {
         params.put("products", products);
         return new ModelAndView(params, "product/index");
     }
+
+    public static ModelAndView renderProductsByFilterAgain(Request req, Response res) {
+
+        ProductDao productDataStore = ProductDaoMem.getInstance();
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+
+        List<Product> products = new ArrayList<>(productDataStore.getAll());
+
+        for (Product product : productDataStore.getAll()) {
+            if ( (!Objects.equals(product.getSupplier().getName(), req.queryParams("supplierFilter")))
+                    && (!Objects.equals(req.queryParams("supplierFilter"), "All Suppliers")) ) {
+                products.remove(product);
+                continue;
+            }
+
+            if ( (!Objects.equals(product.getProductCategory().getName(), req.queryParams("categoryFilter")))
+                    && (!Objects.equals(req.queryParams("categoryFilter"), "All Categories")) ) {
+                products.remove(product);
+            }
+        }
+
+        System.out.println(req.queryParams("categoryFilter"));
+
+        Map params = new HashMap<>();
+        params.put("categories", productCategoryDataStore.getAll());
+        params.put("suppliers", supplierDataStore.getAll());
+        params.put("products", products);
+        return new ModelAndView(params, "product/products");
+    }
+
 
 }
