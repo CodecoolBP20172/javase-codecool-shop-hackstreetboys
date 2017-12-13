@@ -25,12 +25,10 @@
 <body>
 
 <div class="jumbotron text-center">
-    <h1>Codecool Shop</h1>
+    <img src="/img/codecool-logo.png" alt="" />
 </div>
 
 <div class="container">
-    
-    <!-- <form action="/filter" method="GET"> -->
 
         <select name="categoryFilter" id="categoryFilter" class="selectpicker"  data-style="btn-success">
             <option>All Categories</option>
@@ -45,11 +43,10 @@
                 <option th:text="${supplier.getName()}">Supplier Title</option>
             </div>
         </select>
-        <button id="button" name="OK" type="submit" class="btn btn-success">OK</button>
+        <button id="button" class="btn btn-success">OK</button>
     <br>
     </br>
 
-    <!--  </form>-->
 
     <div id="products" class="row list-group">
 
