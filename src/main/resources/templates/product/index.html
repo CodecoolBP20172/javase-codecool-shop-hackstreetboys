@@ -17,6 +17,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
 
     <script src="/js/main.js" />
 
@@ -47,7 +51,12 @@
     <br>
     </br>
 
-
+    <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+    <!--<div th:if="${order.getValue() != null}">
+        <div th:text="${order.getValue()}"></div></div>
+    <div th:unless="${order.keySet}">
+        <div>No items in the cart</div>
+    </div>-->
     <div id="products" class="row list-group">
 
         <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products} ">
@@ -61,8 +70,8 @@
                             <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
                         </div>
                         <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="#">Add to cart</a>
-
+                            <!--<a class="btn btn-success" href="#">Add to cart</a>-->
+                            <a class="btn btn-success" href="#" th:href= "'/addcart/' + ${prod.id}">Add to cart</a>
                         </div>
                     </div>
                 </div>

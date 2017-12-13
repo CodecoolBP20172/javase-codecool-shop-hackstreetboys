@@ -1,6 +1,7 @@
 import static spark.Spark.*;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
+import com.codecool.shop.controller.OrderController;
 import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.*;
 import com.codecool.shop.dao.implementation.*;
@@ -21,6 +22,8 @@ public class Main {
         // populate some data for the memory storage
         populateData();
 
+        Integer userId = 0;
+
         // Always start with more specific routes
         get("/hello", (req, res) -> "Hello World");
 
@@ -35,6 +38,11 @@ public class Main {
         post("/filter", (Request req, Response res) -> {
             return new ThymeleafTemplateEngine().render( ProductController.renderProductsByFilter(req, res) );
                 });
+
+        get("/addcart/:prod.id", (Request req, Response res) -> {
+            return new ThymeleafTemplateEngine().render( OrderController.renderOrder(req, res, userId) );
+        });
+        // Add this line to your project to enable the debug screen
 
         enableDebugScreen();
     }
