@@ -31,12 +31,12 @@ public class OrderController {
 
     public static ModelAndView shopCart(Request req, Response res, Integer userId) {
 
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
+
+        Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
 
         Map params = new HashMap<>();
-        params.put("shoppingOrder", orderDataStore.getAll().get(userId).getAll().keySet());
+        params.put("shoppingOrder", order.getAll().keySet());
 
         return new ModelAndView(params, "product/modal");
     }
-
 }

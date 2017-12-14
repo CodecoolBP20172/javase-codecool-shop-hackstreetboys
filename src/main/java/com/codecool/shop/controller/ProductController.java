@@ -64,13 +64,4 @@ public class ProductController {
         return new ModelAndView(params, "product/products");
     }
 
-    public static ModelAndView shopCart(Request req, Response res) {
-
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-
-        Map params = new HashMap<>();
-        params.put("shoppingOrder", orderDataStore.getAll().get(0).getAll().keySet());
-
-        return new ModelAndView(params, "product/modal");
-    }
 }
