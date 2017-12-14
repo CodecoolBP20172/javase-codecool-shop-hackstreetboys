@@ -33,11 +33,18 @@ public class OrderController {
 
     public static ModelAndView shopCart(Request req, Response res, Integer userId) {
 
-
         Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
+
+        float allPrice = 0;
+
+        for(Product product : order.getAll().keySet()) {
+            allPrice += product.getDefaultPrice() * order.getAll().get(product);
+        }
+
 
         Map params = new HashMap<>();
         params.put("shoppingOrder", order.getAll());
+        params.put("allPrice", allPrice);
 
         return new ModelAndView(params, "product/modal");
     }

@@ -42,7 +42,7 @@ function addEventListener() {
             $.post("/shoppingCart",
                 {},
                 function(data, status) {
-                    document.getElementById("shoppingCart").innerHTML = data;
+                    document.getElementById("content").innerHTML = data;
 
                     console.log(data);
                 });
