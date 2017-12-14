@@ -1,19 +1,20 @@
 
 <div id="cart" class="row list-group">
 
-    <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${shoppingOrder} ">
+    <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${shoppingOrder.keySet()} ">
         <div class="thumbnail">
             <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" th:attr="src='/img/product_' + ${prod.id} + '.jpg'" alt="" />
             <div class="caption">
                 <h4 class="group inner list-group-item-heading" th:text="${prod.name}">Product name</h4>
                 <p class="group inner list-group-item-text" th:text="${prod.description}">Product description... </p>
                 <div class="row">
-                    <div class="col-xs-12 col-md-6">
-                        <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
+                    <br>
+                    <div style="padding-left: 15px">
+                        <button class="btn btn-success addToCart" th:text="Quantity+': ' + (${shoppingOrder.get(prod)})">Quantity</button>
                     </div>
-
-                    <div class="col-xs-12 col-md-6">
-                        <button class="btn btn-success addToCart">Quantity</button>
+                    </br>
+                    <div style="padding-left: 15px">
+                        <button class="btn btn-success addToCart" th:text="Price+': ' + (${prod.getDefaultPrice() * shoppingOrder.get(prod)})">Price</button>
                     </div>
                 </div>
             </div>

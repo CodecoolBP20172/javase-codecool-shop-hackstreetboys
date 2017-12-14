@@ -15,6 +15,8 @@ import spark.Request;
 import spark.Response;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class OrderController {
@@ -35,7 +37,7 @@ public class OrderController {
         Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
 
         Map params = new HashMap<>();
-        params.put("shoppingOrder", order.getAll().keySet());
+        params.put("shoppingOrder", order.getAll());
 
         return new ModelAndView(params, "product/modal");
     }
