@@ -12,13 +12,18 @@ $(document).ready(function() {
             // TODO. HANDLE STATUS
 
               document.getElementById("products").innerHTML = data;
+
               addEventListener();
           })
     });
+
     addEventListener();
+
 });
 
 function addEventListener() {
+
+    $(".addToCart").unbind();
 
     $(".addToCart").click(function () {
         $.post("/addToCart",

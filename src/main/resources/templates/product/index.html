@@ -51,11 +51,55 @@
     <br>
     </br>
 
-    <div id="shoppingCart">
-        <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
-        <div id="shoppingCartItems">( 0 )</div>
-    </div>
+    <button type="button" class="btn btn-success btn-lg" id="modal" data-toggle="modal" data-target="#myModal"><i class="fa fa-shopping-cart fa" aria-hidden="true"></i> ( <span id="shoppingCartItems">0</span> )
+    </button>
 
+    <br>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Your shopping cart</h4>
+                </div>
+
+                <div class="modal-body" id="modalText">
+
+                    <div id="products" class="row list-group">
+
+                        <div class="item col-xs-4 col-lg-4" th:each="prod,iterStat : ${products} ">
+                            <div class="thumbnail">
+                                <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" th:attr="src='/img/product_' + ${prod.id} + '.jpg'" alt="" />
+                                <div class="caption">
+                                    <h4 class="group inner list-group-item-heading" th:text="${prod.name}">Product name</h4>
+                                    <p class="group inner list-group-item-text" th:text="${prod.description}">Product description... </p>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-6">
+                                            <p class="lead" th:text="${prod.getPrice()}">100 USD</p>
+                                        </div>
+                                        <div class="col-xs-12 col-md-6">
+                                            <button th:id="${prod.id}" class="btn btn-success addToCart">Add to cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </br>
 
     <div id="products" class="row list-group">
 

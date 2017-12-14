@@ -38,6 +38,9 @@ public class ProductController {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
+
+
 
         List<Product> products = new ArrayList<>(productDataStore.getAll());
 
@@ -53,12 +56,19 @@ public class ProductController {
                 products.remove(product);
             }
         }
+        
+
 
         Map params = new HashMap<>();
         params.put("categories", productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", products);
+
+        params.put("shoppingOrder", orderDataStore.getAll());
+
         return new ModelAndView(params, "product/products");
+
+
     }
 
 
