@@ -1,6 +1,8 @@
 
 $(document).ready(function() {
 
+    console.log($("#categoryFilter option:selected").text())
+
     $("#button").click(function () {
 
         $.post("/filter",
@@ -19,6 +21,7 @@ $(document).ready(function() {
 
     addEventListener();
 
+
 });
 
 function addEventListener() {
@@ -33,6 +36,18 @@ function addEventListener() {
             function(data, status) {
                 document.getElementById("shoppingCartItems").innerHTML = data;
             });
+
+        $("#modal").click(function () {
+
+            $.post("/shoppingCart",
+                {},
+                function(data, status) {
+                    document.getElementById("shoppingCart").innerHTML = data;
+
+                    console.log(data);
+                });
+
+        })
     })
 
 }

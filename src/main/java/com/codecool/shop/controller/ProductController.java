@@ -30,6 +30,7 @@ public class ProductController {
         params.put("categories", productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
+
         return new ModelAndView(params, "product/index");
     }
 
@@ -38,25 +39,21 @@ public class ProductController {
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        OrderDao orderDataStore = OrderDaoMem.getInstance();
-
-
 
         List<Product> products = new ArrayList<>(productDataStore.getAll());
 
         for (Product product : productDataStore.getAll()) {
-            if ( (!Objects.equals(product.getSupplier().getName(), req.queryParams("supplierFilter")))
-                    && (!Objects.equals(req.queryParams("supplierFilter"), "All Suppliers")) ) {
+            if ((!Objects.equals(product.getSupplier().getName(), req.queryParams("supplierFilter")))
+                    && (!Objects.equals(req.queryParams("supplierFilter"), "All Suppliers"))) {
                 products.remove(product);
                 continue;
             }
 
-            if ( (!Objects.equals(product.getProductCategory().getName(), req.queryParams("categoryFilter")))
-                    && (!Objects.equals(req.queryParams("categoryFilter"), "All Categories")) ) {
+            if ((!Objects.equals(product.getProductCategory().getName(), req.queryParams("categoryFilter")))
+                    && (!Objects.equals(req.queryParams("categoryFilter"), "All Categories"))) {
                 products.remove(product);
             }
         }
-        
 
 
         Map params = new HashMap<>();
@@ -64,12 +61,16 @@ public class ProductController {
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", products);
 
-        params.put("shoppingOrder", orderDataStore.getAll());
-
         return new ModelAndView(params, "product/products");
-
-
     }
 
+    public static ModelAndView shopCart(Request req, Response res) {
 
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
+
+        Map params = new HashMap<>();
+        params.put("shoppingOrder", orderDataStore.getAll().get(0).getAll().keySet());
+
+        return new ModelAndView(params, "product/modal");
+    }
 }

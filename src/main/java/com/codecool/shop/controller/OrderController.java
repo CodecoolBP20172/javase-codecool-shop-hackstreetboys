@@ -29,4 +29,14 @@ public class OrderController {
         return order.getNumberOfProducts();
     }
 
+    public static ModelAndView shopCart(Request req, Response res, Integer userId) {
+
+        OrderDao orderDataStore = OrderDaoMem.getInstance();
+
+        Map params = new HashMap<>();
+        params.put("shoppingOrder", orderDataStore.getAll().get(userId).getAll().keySet());
+
+        return new ModelAndView(params, "product/modal");
+    }
+
 }
