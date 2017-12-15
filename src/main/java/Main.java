@@ -45,7 +45,7 @@ public class Main {
         // Add this line to your project to enable the debug screen
 
         post("/shoppingCart", (Request req, Response res) -> {
-            return new ThymeleafTemplateEngine().render( OrderController.shopCart(req, res, userId) );
+            return new ThymeleafTemplateEngine().render( OrderController.renderModal(req, res, userId) );
         });
 
 

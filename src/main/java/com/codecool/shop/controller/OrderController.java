@@ -1,22 +1,13 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
-import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class OrderController {
@@ -31,16 +22,14 @@ public class OrderController {
         return order.getNumberOfProducts();
     }
 
-    public static ModelAndView shopCart(Request req, Response res, Integer userId) {
+    public static ModelAndView renderModal(Request req, Response res, Integer userId) {
 
         Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
-
         float allPrice = 0;
 
         for(Product product : order.getAll().keySet()) {
             allPrice += product.getDefaultPrice() * order.getAll().get(product);
         }
-
 
         Map params = new HashMap<>();
         params.put("shoppingOrder", order.getAll());

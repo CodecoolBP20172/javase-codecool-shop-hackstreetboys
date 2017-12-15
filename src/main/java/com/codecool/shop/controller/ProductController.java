@@ -1,22 +1,15 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
-
-import freemarker.ext.beans.HashAdapter;
 import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
-
 import java.util.*;
 
 public class ProductController {
@@ -43,6 +36,7 @@ public class ProductController {
         List<Product> products = new ArrayList<>(productDataStore.getAll());
 
         for (Product product : productDataStore.getAll()) {
+
             if ((!Objects.equals(product.getSupplier().getName(), req.queryParams("supplierFilter")))
                     && (!Objects.equals(req.queryParams("supplierFilter"), "All Suppliers"))) {
                 products.remove(product);
@@ -55,7 +49,6 @@ public class ProductController {
             }
         }
 
-
         Map params = new HashMap<>();
         params.put("categories", productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
@@ -63,5 +56,4 @@ public class ProductController {
 
         return new ModelAndView(params, "product/products");
     }
-
 }
