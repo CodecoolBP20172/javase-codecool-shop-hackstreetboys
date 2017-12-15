@@ -31,6 +31,8 @@ public class OrderController {
         return order.getNumberOfProducts();
     }
 
+
+
     public static ModelAndView shopCart(Request req, Response res, Integer userId) {
 
         Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
@@ -46,6 +48,7 @@ public class OrderController {
         params.put("shoppingOrder", order.getAll());
         params.put("allPrice", allPrice);
 
+        System.out.println();
         return new ModelAndView(params, "product/modal");
     }
 }
