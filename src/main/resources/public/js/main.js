@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
-    addEventListenerToCart();
-    addEventListenerToOk();
+    addEventListenerToCartButton();
+    addEventListenerToOkButton();
     addEventListenerToModal();
 });
 
@@ -17,7 +17,7 @@ function addEventListenerToModal() {
 }
 
 
-function addEventListenerToOk() {
+function addEventListenerToOkButton() {
     $("#button").click(function () {
         $.post("/filter",
             {
@@ -26,13 +26,13 @@ function addEventListenerToOk() {
             },
             function(data, status) {
                 document.getElementById("products").innerHTML = data;
-                addEventListenerToCart();
+                addEventListenerToCartButton();
             })
     });
 }
 
 
-function addEventListenerToCart() {
+function addEventListenerToCartButton() {
     $(".addToCart").unbind();
     $(".addToCart").click(function () {
         $.post("/addToCart",
