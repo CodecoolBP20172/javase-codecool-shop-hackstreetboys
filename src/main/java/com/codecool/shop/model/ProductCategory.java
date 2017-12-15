@@ -1,5 +1,7 @@
 package com.codecool.shop.model;
 
+import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
+
 import java.util.ArrayList;
 
 public class ProductCategory extends BaseModel {
@@ -10,6 +12,7 @@ public class ProductCategory extends BaseModel {
         super(name);
         this.department = department;
         this.products = new ArrayList<>();
+        ProductCategoryDaoMem.getInstance().add(this);
     }
 
     public String getDepartment() {
