@@ -2,6 +2,7 @@ package com.codecool.shop.model;
 
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 
+import java.util.ArrayList;
 import java.util.Currency;
 
 public class Product extends BaseModel {
@@ -10,6 +11,7 @@ public class Product extends BaseModel {
     private Currency defaultCurrency;
     private ProductCategory productCategory;
     private Supplier supplier;
+    private static ArrayList<Product> products = new ArrayList<>();
 
 
     public Product(String name, float defaultPrice, String currencyString, String description, ProductCategory productCategory, Supplier supplier) {
@@ -17,7 +19,7 @@ public class Product extends BaseModel {
         this.setPrice(defaultPrice, currencyString);
         this.setSupplier(supplier);
         this.setProductCategory(productCategory);
-        ProductDaoMem.getInstance().add(this);
+        products.add(this);
     }
 
     public float getDefaultPrice() { return defaultPrice; }
@@ -49,7 +51,6 @@ public class Product extends BaseModel {
 
     public void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
-        this.productCategory.addProduct(this);
     }
 
     public Supplier getSupplier() {
@@ -58,7 +59,6 @@ public class Product extends BaseModel {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
-        this.supplier.addProduct(this);
     }
 
     @Override

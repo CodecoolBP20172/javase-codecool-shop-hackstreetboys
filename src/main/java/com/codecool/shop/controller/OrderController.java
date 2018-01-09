@@ -17,6 +17,7 @@ public class OrderController {
         Integer productId = Integer.valueOf(req.queryParams("productId"));
         Product product = ProductDaoMem.getInstance().find(productId);
         Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
+
         order.add(product);
 
         return order.getNumberOfProducts();

@@ -1,14 +1,14 @@
 
 $(document).ready(function() {
-    addEventListenerToCartButton();
-    addEventListenerToOkButton();
-    addEventListenerToModal();
+    addEventListenerToAddToCartButton();
+    addEventListenerToFilterButton();
+    addEventListenerToCartModal();
 });
 
 
-function addEventListenerToModal() {
+function addEventListenerToCartModal() {
     $("#modal").click(function () {
-        $.post("/shoppingCart", {},
+        $.get("/shoppingCart", {},
             function(data, status) {
                 document.getElementById("content").innerHTML = data;
                 console.log(data);
@@ -17,27 +17,30 @@ function addEventListenerToModal() {
 }
 
 
-function addEventListenerToOkButton() {
+function addEventListenerToFilterButton() {
     $("#button").click(function () {
-        $.post("/filter",
+        $.get("/filter",
             {
                 categoryFilter: $("#categoryFilter option:selected").text(),
                 supplierFilter: $("#supplierFilter option:selected").text()
             },
             function(data, status) {
                 document.getElementById("products").innerHTML = data;
-                addEventListenerToCartButton();
+                addEventListenerToAddToCartButton();
             })
     });
 }
 
 
-function addEventListenerToCartButton() {
+function addEventListenerToAddToCartButton() {
     $(".addToCart").unbind();
     $(".addToCart").click(function () {
         $.post("/addToCart",
-            {productId : this.id}, function(data, status) {
-                document.getElementById("shoppingCartItems").innerHTML = data;
+            {
+                productId : this.id
+            },
+            function(data, status) {
+                document.getElementById("shoppingCartItems").innerHTML = " (" + data + ")";
             });
     })
 }
