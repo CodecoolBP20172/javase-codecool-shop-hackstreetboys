@@ -9,6 +9,7 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Product;
+import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
@@ -31,11 +32,9 @@ public class ProductController {
         return new ModelAndView(params, "product/index");
     }
 
-    public static ModelAndView renderProductsByFilter(Request req, Response res) {
+    public static String renderProductsByFilter(Request req, Response res) {
 
         ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
 
         List<Product> products = new ArrayList<>(productDataStore.getAll());
 
@@ -53,11 +52,9 @@ public class ProductController {
             }
         }
 
-        Map params = new HashMap<>();
-        params.put("categories", productCategoryDataStore.getAll());
-        params.put("suppliers", supplierDataStore.getAll());
-        params.put("products", products);
+        Gson gson = new Gson();
+        String json = gson.toJson(products);
 
-        return new ModelAndView(params, "product/products");
+        return json;
     }
 }

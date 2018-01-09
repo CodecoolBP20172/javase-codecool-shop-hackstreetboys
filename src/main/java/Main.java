@@ -35,9 +35,7 @@ public class Main {
            return new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res, userId) );
         });
 
-        get("/filter", (Request req, Response res) -> {
-            return new ThymeleafTemplateEngine().render( ProductController.renderProductsByFilter(req, res) );
-                });
+        post("/filter", ProductController::renderProductsByFilter);
 
         post("/addToCart", (Request req, Response res) -> {
             return OrderController.renderOrder(req, res, userId);
