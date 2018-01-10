@@ -29,6 +29,7 @@ function addEventListenerToFilterButton() {
             var template = "";
             products.forEach(function(product){
                 product["number"] = product.defaultPrice.toFixed(1);
+                
                 var string = "\n" +
                     "<div class=\"item col-xs-4 col-lg-4\">\n" +
                     "    <div class=\"thumbnail\">\n" +
