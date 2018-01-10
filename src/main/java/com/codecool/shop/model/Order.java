@@ -10,6 +10,7 @@ public class Order extends BaseModel {
     private HashMap<Product, Integer> products = new HashMap<>();
     private Integer userId;
     private Integer numberOfProducts = 0;
+    private Float totalPrice = 0f;
 
 
     public Order(Integer userId) {
@@ -22,9 +23,14 @@ public class Order extends BaseModel {
     public void add(Product product) {
         products.merge(product, 1, (a, b) -> a + b);
         numberOfProducts++;
+        totalPrice += product.getDefaultPrice();
     }
 
-    public void remove(int id) { products.remove(find(id)); }
+    public void remove(int id) {
+        Product productToRemove = find(id);
+        products.remove(productToRemove);
+        totalPrice -= productToRemove.getDefaultPrice();
+    }
 
     public Product find(int id)  {
         for (Product product : products.keySet()) {
@@ -40,5 +46,7 @@ public class Order extends BaseModel {
     public Integer getUserId() { return userId; }
 
     public Integer getNumberOfProducts() { return numberOfProducts; }
+
+    public Float getTotalPrice() { return totalPrice; }
 
 }
