@@ -5,17 +5,47 @@ import com.codecool.shop.controller.OrderController;
 import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.*;
 import com.codecool.shop.dao.implementation.*;
+import com.codecool.shop.db.ConnectionHandler;
 import com.codecool.shop.model.*;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
 public class Main {
+
+    private static void executeQuery(String query) {
+        ConnectionHandler connectionHandler = new ConnectionHandler();
+        try (Connection connection = connectionHandler.getConnection();
+             Statement statement =connection.createStatement();
+        ){
+            statement.execute(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void test() throws SQLException {
+
+        String query = "INSERT INTO todos (id, title, status) VALUES ('1111', 'kkkk', 'xxx');";
+        executeQuery(query);
+
+    }
+
+
 
     public static Integer userId = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+
+        test();
 
         // default server settings
         exception(Exception.class, (e, req, res) -> e.printStackTrace());
@@ -33,8 +63,8 @@ public class Main {
 
         get("/shoppingCart", (Request req, Response res) -> new ThymeleafTemplateEngine().render(new ModelAndView(OrderController.renderModal(req, res, userId), "product/modal")));
 
-
         // Add this line to your project to enable the debug screen
+
         enableDebugScreen();
     }
 
