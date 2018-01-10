@@ -51,8 +51,6 @@ function addEventListenerToFilterButton() {
             });
             document.getElementById("products").innerHTML = template;
 
-            console.log(template);
-
             addEventListenerToAddToCartButton();
         })
     });
@@ -67,7 +65,8 @@ function addEventListenerToAddToCartButton() {
                 productId : this.id
             },
             function(data, status) {
-                document.getElementById("shoppingCartItems").innerHTML = " (" + data + ")";
+                numberOfItemsInShoppingCart = JSON.parse(data);
+                document.getElementById("shoppingCartItems").innerHTML = " (" + numberOfItemsInShoppingCart + ")";
             });
     })
 }

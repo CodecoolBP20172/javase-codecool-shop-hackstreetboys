@@ -24,29 +24,16 @@ public class Main {
         // populate some data for the memory storage
         populateData();
 
-        // Always start with more specific routes
-        get("/hello", (req, res) -> "Hello World");
-
-        // Always add generic routes to the end
-        //get("/", ProductController::renderProducts, new ThymeleafTemplateEngine());
-        // Equivalent with above
-
-        get("/", (Request req, Response res) -> {
-           return new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res, userId) );
-        });
+        get("/", (Request req, Response res) -> new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res, userId) ));
 
         post("/filter", ProductController::renderProductsByFilter);
 
-        post("/addToCart", (Request req, Response res) -> {
-            return OrderController.renderOrder(req, res, userId);
-        });
+        post("/addToCart", (Request req, Response res) -> OrderController.renderOrder(req, res, userId));
+
+        get("/shoppingCart", (Request req, Response res) -> new ThymeleafTemplateEngine().render( OrderController.renderModal(req, res, userId) ));
+
+
         // Add this line to your project to enable the debug screen
-
-        get("/shoppingCart", (Request req, Response res) -> {
-            return new ThymeleafTemplateEngine().render( OrderController.renderModal(req, res, userId) );
-        });
-
-
         enableDebugScreen();
     }
 
