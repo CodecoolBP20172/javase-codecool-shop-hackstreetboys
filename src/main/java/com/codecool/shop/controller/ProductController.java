@@ -23,7 +23,7 @@ public class ProductController {
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
         OrderDao orderDataStore = OrderDaoMem.getInstance();
 
-        Map params = new HashMap<>();
+        HashMap<String, Object> params = new HashMap<>();
         params.put("categories", productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
@@ -33,9 +33,7 @@ public class ProductController {
     }
 
     public static String renderProductsByFilter(Request req, Response res) {
-
         ProductDao productDataStore = ProductDaoMem.getInstance();
-
         List<Product> products = new ArrayList<>(productDataStore.getAll());
 
         for (Product product : productDataStore.getAll()) {
@@ -51,10 +49,7 @@ public class ProductController {
                 products.remove(product);
             }
         }
-
         Gson gson = new Gson();
-        String json = gson.toJson(products);
-
-        return json;
+        return gson.toJson(products);
     }
 }

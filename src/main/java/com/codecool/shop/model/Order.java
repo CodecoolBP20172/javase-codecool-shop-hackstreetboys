@@ -47,4 +47,6 @@ public class Order extends BaseModel {
 
     public Integer getNumberOfProducts() { return numberOfProducts; }
 
+    public Float getTotalPrice() { return totalPrice; }
+
 }

@@ -6,6 +6,7 @@ import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.*;
 import com.codecool.shop.dao.implementation.*;
 import com.codecool.shop.model.*;
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -30,7 +31,7 @@ public class Main {
 
         post("/addToCart", (Request req, Response res) -> OrderController.renderOrder(req, res, userId));
 
-        get("/shoppingCart", (Request req, Response res) -> new ThymeleafTemplateEngine().render( OrderController.renderModal(req, res, userId) ));
+        get("/shoppingCart", (Request req, Response res) -> new ThymeleafTemplateEngine().render(new ModelAndView(OrderController.renderModal(req, res, userId), "product/modal")));
 
 
         // Add this line to your project to enable the debug screen

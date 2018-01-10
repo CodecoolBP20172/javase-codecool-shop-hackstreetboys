@@ -10,6 +10,7 @@ function addEventListenerToCartModal() {
     $("#modal").click(function () {
         $.get("/shoppingCart", {},
             function(data, status) {
+                console.log(data);
                 document.getElementById("content").innerHTML = data;
             });
     })
