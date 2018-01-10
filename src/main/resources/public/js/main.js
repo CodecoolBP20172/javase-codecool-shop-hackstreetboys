@@ -28,6 +28,7 @@ function addEventListenerToFilterButton() {
             var products = JSON.parse(data);
             var template = "";
             products.forEach(function(product){
+                product["number"] = product.defaultPrice.toFixed(1);
                 var string = "\n" +
                     "<div class=\"item col-xs-4 col-lg-4\">\n" +
                     "    <div class=\"thumbnail\">\n" +
@@ -37,7 +38,7 @@ function addEventListenerToFilterButton() {
                     "            <p class=\"group inner list-group-item-text\">{{description}}</p>\n" +
                     "            <div class=\"row\">\n" +
                     "                <div class=\"col-xs-12 col-md-6\">\n" +
-                    "                    <p class=\"lead\">{{defaultPrice}} {{defaultCurrency}}</p>\n" +
+                    "                    <p class=\"lead\">{{number}} {{defaultCurrency}}</p>\n" +
                     "                </div>\n" +
                     "                <div class=\"col-xs-12 col-md-6\">\n" +
                     "                    <button id={{id}} class=\"btn btn-success addToCart\">Add to cart</button>\n" +
