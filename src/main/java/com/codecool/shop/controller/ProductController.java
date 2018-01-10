@@ -17,6 +17,7 @@ import java.util.*;
 public class ProductController {
 
     public static ModelAndView renderProducts(Request req, Response res, Integer userId) {
+
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
