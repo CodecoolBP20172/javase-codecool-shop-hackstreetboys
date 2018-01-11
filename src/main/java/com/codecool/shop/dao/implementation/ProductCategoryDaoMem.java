@@ -2,9 +2,11 @@ package com.codecool.shop.dao.implementation;
 
 
 import com.codecool.shop.dao.ProductCategoryDao;
+import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ProductCategoryDaoMem implements ProductCategoryDao {
@@ -26,13 +28,26 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     @Override
     public void add(ProductCategory category) {
-        category.setId(DATA.size() + 1);
-        DATA.add(category);
+        if( category != null){
+            category.setId(DATA.size() + 1);
+            DATA.add(category);
+        }
+        else{
+            throw new NullPointerException();
+        }
     }
 
     @Override
     public ProductCategory find(int id) {
-        return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        ArrayList <Integer> maxMinId = new ArrayList();
+        for (ProductCategory prodCategory:DATA) {
+            maxMinId.add(prodCategory.getId());
+        }
+        if (id >= Collections.min(maxMinId) && id <= Collections.max(maxMinId)) {
+            return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override

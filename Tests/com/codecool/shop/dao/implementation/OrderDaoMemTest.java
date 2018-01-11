@@ -1,5 +1,7 @@
-package com.codecool.shop.dao;
+package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.OrderDaoTest;
+import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
@@ -10,13 +12,13 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 
-public class ProductDaoMemTest extends ProductDaoTest<ProductDaoMem> {
+public class OrderDaoMemTest extends OrderDaoTest<OrderDaoMem> {
 
 
 
     @Override
-    protected ProductDaoMem createInstance() {
-        return ProductDaoMem.getInstance();
+    protected OrderDaoMem createInstance() {
+        return OrderDaoMem.getInstance();
     }
 
 

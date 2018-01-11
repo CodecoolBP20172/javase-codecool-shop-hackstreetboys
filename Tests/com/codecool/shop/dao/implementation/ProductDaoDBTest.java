@@ -1,5 +1,6 @@
-package com.codecool.shop.dao;
+package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.ProductDaoTest;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;

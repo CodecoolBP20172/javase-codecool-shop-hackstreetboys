@@ -44,9 +44,7 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
     @BeforeEach
     public void testSetup() {
-        ArrayList<Product> fick = new ArrayList();
         instance = createInstance();
-
 
         List<Product> productsToDel = new ArrayList<Product>(instance.getAll());
 
@@ -102,7 +100,7 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
     @Test void testFindWrongId2(){
         assertThrows(IllegalArgumentException.class, () -> {
-            instance.find(100);
+            instance.find(1000);
         });
     }
 

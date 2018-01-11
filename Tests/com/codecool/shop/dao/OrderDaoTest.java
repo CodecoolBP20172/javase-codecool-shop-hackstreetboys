@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,13 +40,22 @@ public abstract class OrderDaoTest <T extends OrderDao> {
     @BeforeEach
     public void testSetup() {
         instance = createInstance();
-        instance.getAll().clear();
+        List<Order> productsToDel = new ArrayList<Order>(instance.getAll());
+
+        for (Order order : productsToDel) {
+            int idToDel = order.getId();
+            instance.remove(idToDel);
+        }
 
         testProduct1ToFillUpData.setId(1);
         testOrder1ToFillUpOrder.add(testProduct1ToFillUpData);
         testOrder1ToAddOrder.add(testProduct1ToFillUpData);
 
 
+        instance.add(testOrder1ToFillUpOrder);
+        instance.add(testOrder2ToFillUpOrder);
+        instance.add(testOrder3ToFillUpOrder);
+        instance.add(testOrder4ToFillUpOrder);
 
     }
 
@@ -86,15 +97,16 @@ public abstract class OrderDaoTest <T extends OrderDao> {
         });
     }
 
+    @Test
+    public void testFindWrongId2(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.find(1000);
+        });
+    }
+
 
     @Test
     public void testGetAll() {
-        instance.add(testOrder1ToFillUpOrder);
-        instance.add(testOrder2ToFillUpOrder);
-        instance.add(testOrder3ToFillUpOrder);
-        instance.add(testOrder4ToFillUpOrder);
-
-
         assertEquals(4, instance.getAll().size());
     };
 

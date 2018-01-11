@@ -57,10 +57,9 @@ public abstract class ProductCategoryDaoTest <T extends ProductCategoryDao> {
 
     @Test
     public void testAddNull() {
-        int previousSize = instance.getAll().size();
-        instance.add(null);
-        int nextSize = instance.getAll().size();
-        assertEquals(previousSize, nextSize);
+        assertThrows(NullPointerException.class, () -> {
+            instance.add(null);
+        });
     }
 
 
@@ -74,6 +73,12 @@ public abstract class ProductCategoryDaoTest <T extends ProductCategoryDao> {
     public void testFindWrongId(){
         assertThrows(IllegalArgumentException.class, () -> {
             instance.find(-6);
+        });
+    }
+
+    @Test void testFindWrongId2(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.find(1000);
         });
     }
 

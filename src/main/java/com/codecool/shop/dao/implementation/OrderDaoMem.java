@@ -2,8 +2,10 @@ package com.codecool.shop.dao.implementation;
 
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.model.Order;
+import com.codecool.shop.model.Product;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +45,11 @@ public class OrderDaoMem implements OrderDao {
 
     @Override
     public Order find(int id)  {
-        if(id >= 0 && id <= (DATA.size()-1)){
+        ArrayList <Integer> maxMinId = new ArrayList();
+        for (Order order:DATA) {
+            maxMinId.add(order.getId());
+        }
+        if(id >= Collections.min(maxMinId) && id <= Collections.max(maxMinId)){
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
         }
         else{

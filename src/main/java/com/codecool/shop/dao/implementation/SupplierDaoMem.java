@@ -1,9 +1,11 @@
 package com.codecool.shop.dao.implementation;
 
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.model.Product;
 import com.codecool.shop.model.Supplier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SupplierDaoMem implements SupplierDao {
@@ -25,13 +27,26 @@ public class SupplierDaoMem implements SupplierDao {
 
     @Override
     public void add(Supplier supplier) {
-        supplier.setId(DATA.size() + 1);
-        DATA.add(supplier);
+        if ( supplier != null){
+            supplier.setId(DATA.size() + 1);
+            DATA.add(supplier);
+        }
+        else{
+            throw new NullPointerException();
+        }
     }
 
     @Override
     public Supplier find(int id) {
-        return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        ArrayList <Integer> maxMinId = new ArrayList();
+        for (Supplier supplier:DATA) {
+            maxMinId.add(supplier.getId());
+        }
+        if (id >= Collections.min(maxMinId) && id <= Collections.max(maxMinId)) {
+            return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
