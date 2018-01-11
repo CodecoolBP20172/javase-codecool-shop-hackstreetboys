@@ -35,8 +35,11 @@ public abstract class SupplierDaoTest <T extends SupplierDao> {
         }
 
         instance.add(testSupplier1ToFillUpData);
+        testSupplier1ToFillUpData.setId(1);
         instance.add(testSupplier2ToFillUpData);
+        testSupplier2ToFillUpData.setId(2);
         instance.add(testSupplier3ToFillUpData);
+        testSupplier3ToFillUpData.setId(4);
     }
 
 
@@ -67,14 +70,15 @@ public abstract class SupplierDaoTest <T extends SupplierDao> {
     public void testFindWrongId(){
         assertThrows(IllegalArgumentException.class, () -> {
             instance.find(-6);
+            instance.find(1000);
+
         });
     }
 
     @Test
-    public void testFindWrongId2(){
-        assertThrows(IllegalArgumentException.class, () -> {
-            instance.find(1000);
-        });
+    public void testFindNotFoud(){
+        assertEquals(null, instance.find(3));
+
     }
 
 

@@ -7,11 +7,14 @@ import com.codecool.shop.model.Supplier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SupplierDaoMem implements SupplierDao {
 
     private List<Supplier> DATA = new ArrayList<>();
     private static SupplierDaoMem instance = null;
+    private AtomicInteger maxId = new AtomicInteger(1);
+
 
     /* A private Constructor prevents any other class from instantiating.
      */
@@ -28,21 +31,17 @@ public class SupplierDaoMem implements SupplierDao {
     @Override
     public void add(Supplier supplier) {
         if ( supplier != null){
-            supplier.setId(DATA.size() + 1);
+            supplier.setId(maxId.getAndIncrement());
             DATA.add(supplier);
         }
-        else{
+        else {
             throw new NullPointerException();
         }
     }
 
     @Override
     public Supplier find(int id) {
-        ArrayList <Integer> maxMinId = new ArrayList();
-        for (Supplier supplier:DATA) {
-            maxMinId.add(supplier.getId());
-        }
-        if (id >= Collections.min(maxMinId) && id <= Collections.max(maxMinId)) {
+        if (id <= maxId.intValue() && id >= 1 ) {
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
         } else {
             throw new IllegalArgumentException();

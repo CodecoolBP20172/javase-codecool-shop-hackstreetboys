@@ -27,7 +27,7 @@ public abstract class OrderDaoTest <T extends OrderDao> {
     Order testOrder1ToFillUpOrder = new Order(1);
     Order testOrder2ToFillUpOrder = new Order(2);
     Order testOrder3ToFillUpOrder = new Order(3);
-    Order testOrder4ToFillUpOrder = new Order(4);
+    Order testOrder4ToFillUpOrder = new Order(5);
 
     Order testOrder1ToAddOrder = new Order(5);
 
@@ -56,7 +56,6 @@ public abstract class OrderDaoTest <T extends OrderDao> {
         instance.add(testOrder2ToFillUpOrder);
         instance.add(testOrder3ToFillUpOrder);
         instance.add(testOrder4ToFillUpOrder);
-
     }
 
 
@@ -83,25 +82,26 @@ public abstract class OrderDaoTest <T extends OrderDao> {
     }
 
 
-
     @Test
     public void testFind() {
         instance.add(testOrder1ToFillUpOrder);
         assertTrue(instance.find(0) != null);
     };
 
+
     @Test
     public void testFindWrongId(){
         assertThrows(IllegalArgumentException.class, () -> {
             instance.find(-6);
+            instance.find(1000);
+
         });
     }
 
+
     @Test
-    public void testFindWrongId2(){
-        assertThrows(IllegalArgumentException.class, () -> {
-            instance.find(1000);
-        });
+    public void testFindNotFound(){
+        assertEquals(null, instance.find(4));
     }
 
 
@@ -109,8 +109,4 @@ public abstract class OrderDaoTest <T extends OrderDao> {
     public void testGetAll() {
         assertEquals(4, instance.getAll().size());
     };
-
-
-
-
 }

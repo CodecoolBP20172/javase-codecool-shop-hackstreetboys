@@ -31,13 +31,12 @@ public class OrderDaoMem implements OrderDao {
         return new Order(userId);
     }
 
+
     @Override
-    public void add(Order order)
-    {
-        if(order!=null){
+    public void add(Order order) {
+        if (order!=null){
             DATA.add(order);
-        }
-        else{
+        } else {
             throw new NullPointerException();
         }
     }
@@ -60,6 +59,7 @@ public class OrderDaoMem implements OrderDao {
 
     @Override
     public void remove(int id) { DATA.remove(find(id)); }
+
 
     @Override
     public List<Order> getAll() {

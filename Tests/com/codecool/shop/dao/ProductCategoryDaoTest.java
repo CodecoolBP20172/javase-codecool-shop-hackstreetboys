@@ -35,8 +35,11 @@ public abstract class ProductCategoryDaoTest <T extends ProductCategoryDao> {
         }
 
         instance.add(testProdCat1);
+        testProdCat1.setId(1);
         instance.add(testProdCat2);
+        testProdCat2.setId(2);
         instance.add(testProdCat3);
+        testProdCat3.setId(4);
     }
 
 
@@ -73,13 +76,13 @@ public abstract class ProductCategoryDaoTest <T extends ProductCategoryDao> {
     public void testFindWrongId(){
         assertThrows(IllegalArgumentException.class, () -> {
             instance.find(-6);
+            instance.find(1000);
+
         });
     }
 
-    @Test void testFindWrongId2(){
-        assertThrows(IllegalArgumentException.class, () -> {
-            instance.find(1000);
-        });
+    @Test void testFindNotFound(){
+        assertEquals(null, instance.find(3));
     }
 
 
