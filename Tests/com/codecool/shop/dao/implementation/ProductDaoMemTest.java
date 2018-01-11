@@ -14,7 +14,6 @@ import java.util.List;
 public class ProductDaoMemTest extends ProductDaoTest<ProductDaoMem> {
 
 
-
     @Override
     protected ProductDaoMem createInstance() {
         return ProductDaoMem.getInstance();

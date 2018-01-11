@@ -1,7 +1,6 @@
 package com.codecool.shop.dao;
 
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.ProductCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,40 +9,47 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-public abstract class SupplierDaoTest <T extends SupplierDao> {
+public abstract class ProductCategoryDaoTest <T extends ProductCategoryDao> {
 
     private T instance;
 
-    Supplier testSupplier1ToFillUpData = new Supplier("testSup","plop");
-    Supplier testSupplier2ToFillUpData = new Supplier("testSup2","ploppp");
-    Supplier testSupplier3ToFillUpData = new Supplier("testSup3","ploppp");
-    Supplier supplierToTestAddMethod = new Supplier("testsupplier1", "something");
+    ProductCategory testProdCat1 = new ProductCategory("headset", "testDep", "descr");
+    ProductCategory testProdCat2 = new ProductCategory("USB port", "testDep2", "descr2");
+    ProductCategory testProdCat3 = new ProductCategory("microUSBCharger", "testDep3", "descr3");
+
+    ProductCategory prodCatToAdd = new ProductCategory("addThis", "addDep", "add");
 
     protected abstract T createInstance();
+
 
 
     @BeforeEach
     public void testSetup() {
         instance = createInstance();
 
-        List<Supplier> suppliersToDel = new ArrayList<Supplier>(instance.getAll());
+        List<ProductCategory> prodCatsToDel = new ArrayList<ProductCategory>(instance.getAll());
 
-        for (Supplier supplier : suppliersToDel) {
-            int idToDel = supplier.getId();
+        for (ProductCategory product : prodCatsToDel) {
+            int idToDel = product.getId();
             instance.remove(idToDel);
         }
 
-        instance.add(testSupplier1ToFillUpData);
-        instance.add(testSupplier2ToFillUpData);
-        instance.add(testSupplier3ToFillUpData);
+        instance.add(testProdCat1);
+        instance.add(testProdCat2);
+        instance.add(testProdCat3);
+    }
+
+
+    @Test
+    public void testGetAllisWorking() {
+        assertTrue(true);
     }
 
 
     @Test
     public  void testAdd() {
         int previousSize = instance.getAll().size();
-        instance.add(supplierToTestAddMethod);
+        instance.add(prodCatToAdd);
         int nextSize = instance.getAll().size();
         assertEquals(previousSize+1, nextSize);
     }

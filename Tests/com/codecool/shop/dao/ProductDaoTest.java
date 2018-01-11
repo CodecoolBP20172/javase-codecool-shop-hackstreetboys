@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,8 +16,8 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
     private T instance;
 
-
     ProductCategory testCategoryToFillUpData = new ProductCategory("testCat","ppk","sdk");
+
     Supplier testSupplierToFillUpData = new Supplier("testSup","plop");
     Supplier testSupplier2ToFillUpData = new Supplier("testSup2","plop");
 
@@ -27,8 +29,8 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
 
 
-
     Supplier supplierToTestAddMethod = new Supplier("testsupplier1", "something");
+
     ProductCategory prodCatToTestAddMethod = new ProductCategory("testtablet", "sc","src");
     Product productToTestAddMethod = new Product("test", 10, "USD", "testscription", prodCatToTestAddMethod, supplierToTestAddMethod);
 
@@ -40,7 +42,13 @@ public abstract class ProductDaoTest <T extends ProductDao> {
     @BeforeEach
     public void testSetup() {
         instance = createInstance();
-        instance.getAll().clear();
+
+        List<Product> productsToDel = new ArrayList<Product>(instance.getAll());
+
+        for (Product product : productsToDel) {
+            int idToDel = product.getId();
+            instance.remove(idToDel);
+        }
 
 
         instance.add(testProduct1ToFillUpData);
@@ -74,11 +82,11 @@ public abstract class ProductDaoTest <T extends ProductDao> {
     }
 
 
-
     @Test
     public void testFind() {
         assertTrue(instance.find(1) != null);
     };
+
 
     @Test
     public void testFindWrongId(){
@@ -90,6 +98,8 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
     @Test
     public void testGetAll() {
+        //System.out.println(instance.getAll().size());
+        assertAll();
         assertEquals(4, instance.getAll().size());
     };
 
