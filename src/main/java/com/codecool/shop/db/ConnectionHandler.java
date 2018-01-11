@@ -7,9 +7,9 @@ import java.lang.AutoCloseable;
 
 public class ConnectionHandler implements AutoCloseable {
 
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/codeshop";
-    private static final String DB_USER = "daniel";
-    private static final String DB_PASSWORD = "asus7777";
+    private static final String DATABASE = "jdbc:postgresql://localhost:5432/farkasdaniel";
+    private static final String DB_USER = "farkasdaniel";
+    private static final String DB_PASSWORD = "1211";
 
     Connection connection;
 

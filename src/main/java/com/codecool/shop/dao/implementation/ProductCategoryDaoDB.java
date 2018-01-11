@@ -30,14 +30,12 @@ public class ProductCategoryDaoDB implements ProductCategoryDao {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            String sqlStatement = "INSERT INTO productcategories (id, name, description, department) VALUES (?, ?, ?, ?);";
+            String sqlStatement = "INSERT INTO productcategories (name, description, department) VALUES (?, ?, ?);";
 
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
-            statement.setInt(1, category.getId());
-            statement.setString(2, category.getName());
-            statement.setString(3, category.getDescription());
-            statement.setString(4, category.getDepartment());
-
+            statement.setString(1, category.getName());
+            statement.setString(2, category.getDescription());
+            statement.setString(3, category.getDepartment());
             statement.execute();
 
         } catch (SQLException e) {
@@ -47,20 +45,20 @@ public class ProductCategoryDaoDB implements ProductCategoryDao {
 
     @Override
     public ProductCategory find(int id) {
-
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
             String sqlStatement = "SELECT * FROM productcategories WHERE id =  ?";
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             statement.setInt(1, id);
 
-            ResultSet resultSet = statement.executeQuery(sqlStatement);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 ProductCategory productCategory = new ProductCategory(
                         resultSet.getString("name"),
                         resultSet.getString("description"),
                         resultSet.getString("department")
                 );
+                productCategory.setId(id);
                 return productCategory;
             }
             throw new IllegalArgumentException("Invalid id");
@@ -75,9 +73,7 @@ public class ProductCategoryDaoDB implements ProductCategoryDao {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            String sqlStatement = "DELETE FROM productcategories WHERE id = ?";
-
-            PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
+            PreparedStatement statement = connectionHandler.getConnection().prepareStatement("DELETE FROM productcategories WHERE id = ?");
             statement.setInt(1, id);
             statement.execute();
 
@@ -92,24 +88,20 @@ public class ProductCategoryDaoDB implements ProductCategoryDao {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            String sqlStatement = "SELECT * FROM productcategories";
-            PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
-            ResultSet resultSet = statement.executeQuery(sqlStatement);
+            PreparedStatement statement = connectionHandler.getConnection().prepareStatement("SELECT id FROM productcategories");
+            ResultSet resultSet = statement.executeQuery();
 
             List<ProductCategory> resultList = new ArrayList<>();
 
             while (resultSet.next()) {
-                ProductCategory productCategory = new ProductCategory(
-                        resultSet.getString("name"),
-                        resultSet.getString("description"),
-                        resultSet.getString("department")
-                );
+                ProductCategory productCategory =this.find(resultSet.getInt("id"));
+
                 resultList.add(productCategory);
             }
             return resultList;
 
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid id");
+            throw new IllegalArgumentException("Invalid Product category or null", e);
         }
     }
 }
