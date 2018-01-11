@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,9 +17,9 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
     private T instance;
 
-
     ProductCategory testCategoryToFillUpData = new ProductCategory("testCat","ppk","sdk");
     ProductCategory testCategory2ToFillUpData = new ProductCategory("testCat2","ppk","sdk");
+
 
     Supplier testSupplierToFillUpData = new Supplier("testSup","plop");
     Supplier testSupplier2ToFillUpData = new Supplier("testSup2","plop");
@@ -30,8 +32,8 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
 
 
-
     Supplier supplierToTestAddMethod = new Supplier("testsupplier1", "something");
+
     ProductCategory prodCatToTestAddMethod = new ProductCategory("testtablet", "sc","src");
     Product productToTestAddMethod = new Product("test", 10, "USD", "testscription", prodCatToTestAddMethod, supplierToTestAddMethod);
 
@@ -44,15 +46,15 @@ public abstract class ProductDaoTest <T extends ProductDao> {
     public void testSetup() {
         ArrayList<Product> fick = new ArrayList();
         instance = createInstance();
-        //instance.getAll().clear();
-        for(Product product:instance.getAll()){
-            fick.add(product);
-        }
-        for (Product product : fick) {
-            int idToDel = product.getId(); //id
+
+
+        List<Product> productsToDel = new ArrayList<Product>(instance.getAll());
+
+        for (Product product : productsToDel) {
+            int idToDel = product.getId();
             instance.remove(idToDel);
         }
-        System.out.println(instance.getAll());
+
 
         instance.add(testProduct1ToFillUpData);
         instance.add(testProduct2ToFillUpData);
@@ -84,11 +86,11 @@ public abstract class ProductDaoTest <T extends ProductDao> {
     }
 
 
-
     @Test
     public void testFind() {
         assertTrue(instance.find(1) != null);
     };
+
 
     @Test
     public void testFindWrongId(){
