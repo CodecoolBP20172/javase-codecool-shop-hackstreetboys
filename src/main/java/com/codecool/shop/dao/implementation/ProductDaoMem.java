@@ -28,10 +28,27 @@ public class ProductDaoMem implements ProductDao {
         return instance;
     }
 
+    public ArrayList<Integer> minMaxId(){
+        ArrayList<Integer> maxMinId = new ArrayList<>();
+        ArrayList <Integer> idList = new ArrayList();
+        if (DATA.size() < 1) {
+            return idList.add()
+        }
+        for (Product product:DATA) {
+            idList.add(product.getId());
+        }
+        System.out.println(idList);
+        System.out.println(Collections.min(idList));
+        maxMinId.add(Collections.min(idList));
+        maxMinId.add(Collections.max(idList));
+        System.out.println(maxMinId);
+        return maxMinId;
+    }
+
     @Override
     public void add(Product product) {
         if(product !=null){
-            product.setId(DATA.size() + 1);
+            product.setId(minMaxId().get(1) + 1);
             DATA.add(product);
         }
         else{
@@ -41,11 +58,7 @@ public class ProductDaoMem implements ProductDao {
 
     @Override
     public Product find(int id) {
-        ArrayList <Integer> maxMinId = new ArrayList();
-        for (Product product:DATA) {
-            maxMinId.add(product.getId());
-        }
-        if (id >= Collections.min(maxMinId) && id <= Collections.max(maxMinId)) {
+        if (id >= minMaxId().get(0) && id <= minMaxId().get(1)) {
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
         } else {
             throw new IllegalArgumentException();
