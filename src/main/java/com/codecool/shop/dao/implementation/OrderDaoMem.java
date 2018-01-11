@@ -30,14 +30,25 @@ public class OrderDaoMem implements OrderDao {
     }
 
     @Override
-    public void add(Order order) {
-        DATA.add(order);
+    public void add(Order order)
+    {
+        if(order!=null){
+            DATA.add(order);
+        }
+        else{
+            throw new NullPointerException();
+        }
     }
 
 
     @Override
     public Order find(int id)  {
-        return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        if(id >= 0 && id <= (DATA.size()-1)){
+            return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
     }
 
 

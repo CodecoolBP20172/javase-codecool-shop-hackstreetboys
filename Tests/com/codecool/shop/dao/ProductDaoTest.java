@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,11 +17,13 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
 
     ProductCategory testCategoryToFillUpData = new ProductCategory("testCat","ppk","sdk");
+    ProductCategory testCategory2ToFillUpData = new ProductCategory("testCat2","ppk","sdk");
+
     Supplier testSupplierToFillUpData = new Supplier("testSup","plop");
     Supplier testSupplier2ToFillUpData = new Supplier("testSup2","plop");
 
     Product testProduct1ToFillUpData = new Product("testProduct1ToFillUpData",10,"USD","Shit",testCategoryToFillUpData,testSupplierToFillUpData);
-    Product testProduct2ToFillUpData = new Product("testProduct2ToFillUpData",100,"USD","a",testCategoryToFillUpData,testSupplierToFillUpData);
+    Product testProduct2ToFillUpData = new Product("testProduct2ToFillUpData",100,"USD","a",testCategory2ToFillUpData,testSupplierToFillUpData);
     Product testProduct3ToFillUpData = new Product("testProduct3ToFillUpData",1000,"USD","brick",testCategoryToFillUpData,testSupplierToFillUpData);
     Product testProduct4ToFillUpData = new Product("testProduct4ToFillUpData",10000,"USD","sick",testCategoryToFillUpData,testSupplier2ToFillUpData);
 
@@ -39,9 +42,17 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
     @BeforeEach
     public void testSetup() {
+        ArrayList<Product> fick = new ArrayList();
         instance = createInstance();
-        instance.getAll().clear();
-
+        //instance.getAll().clear();
+        for(Product product:instance.getAll()){
+            fick.add(product);
+        }
+        for (Product product : fick) {
+            int idToDel = product.getId(); //id
+            instance.remove(idToDel);
+        }
+        System.out.println(instance.getAll());
 
         instance.add(testProduct1ToFillUpData);
         instance.add(testProduct2ToFillUpData);
@@ -67,10 +78,9 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
     @Test
     public void testAddNull() {
-        int previousSize = instance.getAll().size();
-        instance.add(null);
-        int nextSize = instance.getAll().size();
-        assertEquals(previousSize, nextSize);
+        assertThrows(NullPointerException.class, () -> {
+            instance.add(null);
+        });
     }
 
 
@@ -82,8 +92,15 @@ public abstract class ProductDaoTest <T extends ProductDao> {
 
     @Test
     public void testFindWrongId(){
+        System.out.println(instance.getAll());
         assertThrows(IllegalArgumentException.class, () -> {
             instance.find(-6);
+        });
+    }
+
+    @Test void testFindWrongId2(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            instance.find(100);
         });
     }
 
@@ -102,5 +119,11 @@ public abstract class ProductDaoTest <T extends ProductDao> {
     public void testGetByProdCat(){
         assertEquals(testProduct1ToFillUpData.toString(), instance.getBy(testCategoryToFillUpData).get(0).toString());
     }
+
+    @Test
+    public void testGetBySpecProdCat(){
+        assertEquals(testProduct2ToFillUpData.toString(),instance.getBy(testCategory2ToFillUpData).get(0).toString());
+    }
+
 
 }

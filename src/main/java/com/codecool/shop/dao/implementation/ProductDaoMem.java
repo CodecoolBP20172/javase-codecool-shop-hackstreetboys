@@ -7,6 +7,7 @@ import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,13 +30,26 @@ public class ProductDaoMem implements ProductDao {
 
     @Override
     public void add(Product product) {
-        product.setId(DATA.size() + 1);
-        DATA.add(product);
+        if(product !=null){
+            product.setId(DATA.size() + 1);
+            DATA.add(product);
+        }
+        else{
+            throw new NullPointerException();
+        }
     }
 
     @Override
     public Product find(int id) {
-        return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        ArrayList <Integer> maxMinId = new ArrayList();
+        for (Product product:DATA) {
+            maxMinId.add(product.getId());
+        }
+        if (id >= Collections.min(maxMinId) && id <= Collections.max(maxMinId)) {
+            return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
