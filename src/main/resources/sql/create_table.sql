@@ -2,9 +2,22 @@ DROP TABLE IF EXISTS todos;
 
 CREATE TABLE todos
 (
-id varchar(36) PRIMARY KEY,
-title varchar(40),
-status varchar(10)
+  id serial NOT NULL,
+  name varchar,
+  description text,
+  defaultprice real,
+  currency varchar,
+  productcategory varchar,
+  suppliername varchar
 );
 
-INSERT INTO todos (id, title, status) VALUES ("0", "VALAMI", "xxx")
+CREATE TABLE suppliers
+(
+  id serial NOT NULL,
+  name varchar,
+  description text,
+  defaultprice real,
+  currency varchar,
+  productcategory varchar,
+  suppliername varchar
+);
