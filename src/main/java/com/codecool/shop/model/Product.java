@@ -1,8 +1,5 @@
 package com.codecool.shop.model;
 
-import com.codecool.shop.dao.implementation.ProductDaoMem;
-
-import java.util.ArrayList;
 import java.util.Currency;
 
 public class Product extends BaseModel {
@@ -11,15 +8,12 @@ public class Product extends BaseModel {
     private Currency defaultCurrency;
     private ProductCategory productCategory;
     private Supplier supplier;
-    private static ArrayList<Product> products = new ArrayList<>();
-
 
     public Product(String name, float defaultPrice, String currencyString, String description, ProductCategory productCategory, Supplier supplier) {
         super(name, description);
         this.setPrice(defaultPrice, currencyString);
         this.setSupplier(supplier);
         this.setProductCategory(productCategory);
-        products.add(this);
     }
 
     public float getDefaultPrice() { return defaultPrice; }
