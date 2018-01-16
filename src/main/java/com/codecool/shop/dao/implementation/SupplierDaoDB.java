@@ -40,7 +40,7 @@ public class SupplierDaoDB implements SupplierDao {
             statement.setString(1, supplier.getName());
             statement.setString(2, supplier.getDescription());
             statement.execute();
-            logger.debug("{} is added to the database", supplier);
+            logger.info("Supplier:( {} ) is added to the database", supplier);
         }
 
     }
@@ -61,11 +61,11 @@ public class SupplierDaoDB implements SupplierDao {
                         resultSet.getString("description")
                 );
                 supplier.setId(id);
-                logger.debug("Supplier {} found succesfully", supplier);
+                logger.info("Supplier {} found succesfully", supplier);
                 return supplier;
             }
             else {
-                logger.error("{} is invalid argument", id);
+                logger.warn("{} is invalid argument", id);
                 throw new IllegalArgumentException("Invalid id");
             }
         }
@@ -81,7 +81,7 @@ public class SupplierDaoDB implements SupplierDao {
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             statement.setInt(1, id);
             statement.execute();
-            logger.debug("Supplier with id of {} deleted successfully from the database", id);
+            logger.info("Supplier with id of {} deleted successfully from the database", id);
         }
     }
 
@@ -102,7 +102,7 @@ public class SupplierDaoDB implements SupplierDao {
                 logger.info("Supplier {} is added to allSuppliersList", supplier);
                 allSuppliersList.add(supplier);
             }
-            logger.debug("{} is the list of All Suppliers", allSuppliersList);
+            logger.info("{} is the list of All Suppliers", allSuppliersList);
             return allSuppliersList;
         }
     }

@@ -21,7 +21,7 @@ import java.sql.*;
 public class Main {
 
 
-    public static Integer userId = 0;
+    public static Integer userId = 1;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws SQLException {
@@ -33,7 +33,7 @@ public class Main {
         port(8888);
 
         // populate some data for the memory storage
-        populateData();
+        //populateData();
 
         get("/", (Request req, Response res) -> new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res, userId) ));
 
@@ -46,6 +46,8 @@ public class Main {
         // Add this line to your project to enable the debug screen
 
         enableDebugScreen();
+
+
     }
 
     public static void populateData() throws SQLException {

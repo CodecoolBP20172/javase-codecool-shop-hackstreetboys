@@ -25,11 +25,8 @@ public class ProductController {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("categories", productCategoryDataStore.getAll());
-        System.out.println(productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
-        System.out.println(supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
-        System.out.println(productDataStore.getAll());
         params.put("numberOfItemInOrder", orderDataStore.find(userId).getNumberOfProducts());
 
         return new ModelAndView(params, "product/index");

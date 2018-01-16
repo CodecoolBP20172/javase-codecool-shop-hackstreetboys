@@ -41,13 +41,8 @@ public class ProductDaoDB implements ProductDao {
             statement.setString(2, product.getDescription());
             statement.setFloat(3, product.getDefaultPrice());
             statement.setString(4, product.getDefaultCurrency().toString());
-
-
-
             statement.setInt(5, product.getProductCategory().getId());
-            System.out.println(product.getProductCategory());
             statement.setInt(6, product.getSupplier().getId());
-            System.out.println(product.getSupplier());
             statement.execute();
 
         } catch (SQLException e) {
