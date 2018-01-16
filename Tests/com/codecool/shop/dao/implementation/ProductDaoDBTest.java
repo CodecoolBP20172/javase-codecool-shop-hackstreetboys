@@ -11,18 +11,11 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 
-public class ProductDaoDBTest extends ProductDaoTest<ProductDaoMem> {
-
-
+public class ProductDaoDBTest extends ProductDaoTest<ProductDaoDB> {
 
     @Override
-    protected ProductDaoMem createInstance() {
-        return ProductDaoMem.getInstance();
+    protected ProductDaoDB createInstance() {
+        return ProductDaoDB.getInstance();
     }
-
-
-
-
-
 
 }

@@ -18,6 +18,7 @@ public abstract class ProductDaoTest<T extends ProductDao> {
     private T instance;
 
     ProductCategory testCategoryToFillUpData = new ProductCategory("testCat", "ppk", "sdk");
+
     ProductCategory testCategory2ToFillUpData = new ProductCategory("testCat2", "ppk", "sdk");
 
     Supplier testSupplierToFillUpData = new Supplier("testSup", "plop");
@@ -42,6 +43,7 @@ public abstract class ProductDaoTest<T extends ProductDao> {
         instance = createInstance();
 
         List<Product> productsToDel = new ArrayList<Product>(instance.getAll());
+
         for (Product product : productsToDel) {
             int idToDel = product.getId();
             instance.remove(idToDel);

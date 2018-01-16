@@ -9,4 +9,5 @@ public class SupplierDaoDBTest extends SupplierDaoTest<SupplierDaoMem> {
     protected SupplierDaoMem createInstance() {
         return SupplierDaoMem.getInstance();
     }
+
 }

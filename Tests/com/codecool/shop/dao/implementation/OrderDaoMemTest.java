@@ -14,15 +14,9 @@ import java.util.List;
 
 public class OrderDaoMemTest extends OrderDaoTest<OrderDaoMem> {
 
-
     @Override
     protected OrderDaoMem createInstance() {
         return OrderDaoMem.getInstance();
     }
-
-
-
-
-
 
 }
