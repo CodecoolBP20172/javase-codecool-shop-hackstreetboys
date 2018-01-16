@@ -8,12 +8,15 @@ import com.codecool.shop.model.Supplier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class ProductDaoMem implements ProductDao {
 
     private List<Product> DATA = new ArrayList<>();
     private static ProductDaoMem instance = null;
+    private AtomicInteger maxId = new AtomicInteger(1);
+
 
     /* A private Constructor prevents any other class from instantiating.
      */
@@ -27,15 +30,25 @@ public class ProductDaoMem implements ProductDao {
         return instance;
     }
 
+
     @Override
     public void add(Product product) {
-        product.setId(DATA.size() + 1);
-        DATA.add(product);
+        if(product !=null){
+            product.setId(maxId.getAndIncrement());
+            DATA.add(product);
+        }
+        else {
+            throw new NullPointerException();
+        }
     }
 
     @Override
     public Product find(int id) {
-        return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        if (id <= maxId.intValue() && id >= 1 ) {
+            return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
@@ -57,4 +70,5 @@ public class ProductDaoMem implements ProductDao {
     public List<Product> getBy(ProductCategory productCategory) {
         return DATA.stream().filter(t -> t.getProductCategory().equals(productCategory)).collect(Collectors.toList());
     }
+
 }

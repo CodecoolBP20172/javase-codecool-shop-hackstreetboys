@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 public class Order extends BaseModel {
 
-
     private HashMap<Product, Integer> products = new HashMap<>();
     private Integer userId;
     private Integer numberOfProducts = 0;

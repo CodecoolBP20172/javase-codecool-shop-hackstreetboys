@@ -18,7 +18,7 @@ import java.sql.*;
 public class Main {
 
 
-    public static Integer userId = 0;
+    public static Integer userId = 1;
 
     public static void main(String[] args) throws SQLException {
 
@@ -28,7 +28,7 @@ public class Main {
         port(8888);
 
         // populate some data for the memory storage
-        populateData();
+        //populateData();
 
         get("/", (Request req, Response res) -> new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res, userId) ));
 
@@ -45,9 +45,9 @@ public class Main {
 
     public static void populateData() {
 
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+        ProductDao productDataStore = ProductDaoDB.getInstance();
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoDB.getInstance();
 
         //setting up a new supplier
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
@@ -70,20 +70,20 @@ public class Main {
 
 
         //setting up products and printing it
-        Product product = new Product("Amazon Fire", 49.9f, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon);
-        productDataStore.add(product);
-        product = new Product("Lenovo IdeaPad Miix 700", 479, "USD", "Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.", tablet, lenovo);
-        productDataStore.add(product);
-        product = new Product("Amazon Fire HD 8", 89, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon);
-        productDataStore.add(product);
-        product = new Product("Apple Iphone 5S",178,"USD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", phone, apple);
-        productDataStore.add(product);
-        product = new Product("Apple MacBook Air", 898,"USD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", computer, apple);
-        productDataStore.add(product);
-        product = new Product("Apple Ipad", 311, "USD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", tablet, apple);
-        productDataStore.add(product);
-        product = new Product("Nokia 3310", 60, "USD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", phone, nokia);
-        productDataStore.add(product);
+        Product product1 = new Product("Amazon Fire", 49.9f, "USD", "Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.", tablet, amazon);
+        productDataStore.add(product1);
+        Product product2 = new Product("Lenovo IdeaPad Miix 700", 479, "USD", "Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.", tablet, lenovo);
+        productDataStore.add(product2);
+        Product product3 = new Product("Amazon Fire HD 8", 89, "USD", "Amazon's latest Fire HD 8 tablet is a great value for media consumption.", tablet, amazon);
+        productDataStore.add(product3);
+        Product product4 = new Product("Apple Iphone 5S",178,"USD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", phone, apple);
+        productDataStore.add(product4);
+        Product product5 = new Product("Apple MacBook Air", 898,"USD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", computer, apple);
+        productDataStore.add(product5);
+        Product product6 = new Product("Apple Ipad", 311, "USD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", tablet, apple);
+        productDataStore.add(product6);
+        Product product7 = new Product("Nokia 3310", 60, "USD", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.", phone, nokia);
+        productDataStore.add(product7);
 
         //setting up default order
         Order order = new Order(userId);

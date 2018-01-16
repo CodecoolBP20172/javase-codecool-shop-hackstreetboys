@@ -1,6 +1,8 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.implementation.OrderDaoDB;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
+import com.codecool.shop.dao.implementation.ProductDaoDB;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
@@ -15,8 +17,8 @@ public class OrderController {
     public static String renderOrder(Request req, Response res, Integer userId) {
 
         Integer productId = Integer.valueOf(req.queryParams("productId"));
-        Product product = ProductDaoMem.getInstance().find(productId);
-        Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
+        Product product = ProductDaoDB.getInstance().find(productId);
+        Order order = OrderDaoDB.getInstance().getOrderForUser(userId);
 
         order.add(product);
 
@@ -26,7 +28,7 @@ public class OrderController {
 
     public static Map renderModal(Request req, Response res, Integer userId) {
 
-        Order order = OrderDaoMem.getInstance().getOrderForUser(userId);
+        Order order = OrderDaoDB.getInstance().getOrderForUser(userId);
 
         Map params = new HashMap<>();
         params.put("shoppingOrder", order.getAll());

@@ -30,12 +30,11 @@ public class SupplierDaoDB implements SupplierDao {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            String sqlStatement = "INSERT INTO supplier (id, name, description) VALUES (?, ?, ?);";
+            String sqlStatement = "INSERT INTO suppliers (name, description) VALUES (?, ?);";
 
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
-            statement.setInt(1, supplier.getId());
-            statement.setString(2, supplier.getName());
-            statement.setString(3, supplier.getDescription());
+            statement.setString(1, supplier.getName());
+            statement.setString(2, supplier.getDescription());
             statement.execute();
 
         } catch (SQLException e) {
@@ -48,16 +47,17 @@ public class SupplierDaoDB implements SupplierDao {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            String sqlStatement = "SELECT * FROM supplier WHERE id =  ?";
+            String sqlStatement = "SELECT * FROM suppliers WHERE id =  ?";
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             statement.setInt(1, id);
 
-            ResultSet resultSet = statement.executeQuery(sqlStatement);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 Supplier supplier = new Supplier(
                         resultSet.getString("name"),
                         resultSet.getString("description")
                 );
+                supplier.setId(id);
                 return supplier;
             }
             throw new IllegalArgumentException("Invalid id");
@@ -88,17 +88,15 @@ public class SupplierDaoDB implements SupplierDao {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            String sqlStatement = "SELECT * FROM suppliers";
+            String sqlStatement = "SELECT id FROM suppliers";
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
-            ResultSet resultSet = statement.executeQuery(sqlStatement);
+            ResultSet resultSet = statement.executeQuery();
 
             List<Supplier> resultList = new ArrayList<>();
 
             while (resultSet.next()) {
-                Supplier supplier = new Supplier(
-                        resultSet.getString("name"),
-                        resultSet.getString("description")
-                );
+                Supplier supplier = this.find(resultSet.getInt("id"));
+
                 resultList.add(supplier);
             }
             return resultList;
