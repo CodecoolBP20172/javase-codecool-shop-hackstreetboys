@@ -11,9 +11,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SupplierDaoDB implements SupplierDao {
 
     private static SupplierDaoDB instance = null;
+    private static final Logger logger = LoggerFactory.getLogger(SupplierDaoMem.class);
 
     private SupplierDaoDB() {
     }
@@ -26,7 +30,7 @@ public class SupplierDaoDB implements SupplierDao {
     }
 
     @Override
-    public void add(Supplier supplier) {
+    public void add(Supplier supplier) throws SQLException{
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -36,14 +40,13 @@ public class SupplierDaoDB implements SupplierDao {
             statement.setString(1, supplier.getName());
             statement.setString(2, supplier.getDescription());
             statement.execute();
-
-        } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid Supplier or null", e);
+            logger.debug("{} is added to the database", supplier);
         }
+
     }
 
     @Override
-    public Supplier find(int id) {
+    public Supplier find(int id) throws SQLException {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -58,17 +61,18 @@ public class SupplierDaoDB implements SupplierDao {
                         resultSet.getString("description")
                 );
                 supplier.setId(id);
+                logger.debug("Supplier {} found succesfully", supplier);
                 return supplier;
             }
-            throw new IllegalArgumentException("Invalid id");
-
-        } catch (SQLException e) {
-            throw new IllegalArgumentException("Connection is not working");
+            else {
+                logger.error("{} is invalid argument", id);
+                throw new IllegalArgumentException("Invalid id");
+            }
         }
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(int id) throws SQLException{
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -77,14 +81,12 @@ public class SupplierDaoDB implements SupplierDao {
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             statement.setInt(1, id);
             statement.execute();
-
-        } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid Supplier or null", e);
+            logger.debug("Supplier with id of {} deleted successfully from the database", id);
         }
     }
 
     @Override
-    public List<Supplier> getAll() {
+    public List<Supplier> getAll() throws SQLException{
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -92,17 +94,16 @@ public class SupplierDaoDB implements SupplierDao {
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             ResultSet resultSet = statement.executeQuery();
 
-            List<Supplier> resultList = new ArrayList<>();
+            List<Supplier> allSuppliersList = new ArrayList<>();
 
             while (resultSet.next()) {
                 Supplier supplier = this.find(resultSet.getInt("id"));
 
-                resultList.add(supplier);
+                logger.info("Supplier {} is added to allSuppliersList", supplier);
+                allSuppliersList.add(supplier);
             }
-            return resultList;
-
-        } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid id");
+            logger.debug("{} is the list of All Suppliers", allSuppliersList);
+            return allSuppliersList;
         }
     }
 }

@@ -12,15 +12,20 @@ import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.*;
 
 
 public class Main {
 
 
-    public static Integer userId = 1;
+    public static Integer userId = 0;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws SQLException {
+        logger.info("I am informative!");
 
         // default server settings
         exception(Exception.class, (e, req, res) -> e.printStackTrace());
@@ -28,7 +33,7 @@ public class Main {
         port(8888);
 
         // populate some data for the memory storage
-        //populateData();
+        populateData();
 
         get("/", (Request req, Response res) -> new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res, userId) ));
 
@@ -43,11 +48,12 @@ public class Main {
         enableDebugScreen();
     }
 
-    public static void populateData() {
+    public static void populateData() throws SQLException {
 
-        ProductDao productDataStore = ProductDaoDB.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoDB.getInstance();
+        ProductDao productDataStore = ProductDaoMem.getInstance();
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+
 
         //setting up a new supplier
         Supplier amazon = new Supplier("Amazon", "Digital content and services");

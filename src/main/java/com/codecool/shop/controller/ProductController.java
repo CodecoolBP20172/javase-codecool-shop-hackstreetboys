@@ -10,11 +10,13 @@ import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
+
+import java.sql.SQLException;
 import java.util.*;
 
 public class ProductController {
 
-    public static ModelAndView renderProducts(Request req, Response res, Integer userId) {
+    public static ModelAndView renderProducts(Request req, Response res, Integer userId) throws SQLException {
 
         ProductDao productDataStore = ProductDaoDB.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();
