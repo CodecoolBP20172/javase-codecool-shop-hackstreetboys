@@ -13,12 +13,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ProductDaoDB implements ProductDao {
 
     private static ProductDaoDB instance = null;
 
     ProductCategoryDaoDB productCategoryDaoDB = ProductCategoryDaoDB.getInstance();
     SupplierDaoDB supplierDaoDB = SupplierDaoDB.getInstance();
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductDaoDB.class);
 
     private ProductDaoDB() {
     }
@@ -44,8 +49,10 @@ public class ProductDaoDB implements ProductDao {
             statement.setInt(5, product.getProductCategory().getId());
             statement.setInt(6, product.getSupplier().getId());
             statement.execute();
+            logger.info(" {} is added to Product List", product);
 
         } catch (SQLException e) {
+            logger.warn("Invalid Product category or null");
             throw new IllegalArgumentException("Invalid Product category or null", e);
         }
     }
@@ -71,11 +78,14 @@ public class ProductDaoDB implements ProductDao {
 
                 Product product = new Product(name, price, currency, description, productCategory, supplier);
                 product.setId(id);
+                logger.info("Product with Id:{} is found",id);
                 return product;
             }
+            logger.warn("There is no product with id:{}",id);
             throw new IllegalArgumentException("Invalid id");
 
         } catch (SQLException e) {
+            logger.error("Connection is not working");
             throw new IllegalArgumentException("Connection is not working", e);
         }
     }
@@ -90,8 +100,10 @@ public class ProductDaoDB implements ProductDao {
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             statement.setInt(1, id);
             statement.execute();
+            logger.info("Product with Id:{} is is removed",id);
 
         } catch (SQLException e) {
+            logger.warn("Invalid Product category or null");
             throw new IllegalArgumentException("Invalid Product category or null", e);
         }
     }
@@ -112,9 +124,11 @@ public class ProductDaoDB implements ProductDao {
                 Product product = this.find(resultSet.getInt("id"));
                 productList.add(product);
             }
+            logger.info("Product list returned successfully");
             return productList;
 
         } catch (SQLException e) {
+            logger.warn("Invalid id");
             throw new IllegalArgumentException("Invalid id");
         }
     }
@@ -146,9 +160,11 @@ public class ProductDaoDB implements ProductDao {
                 Product product = new Product(name, price, currency, description, productCategory, supplier);
                 productList.add(product);
             }
+            logger.info("Product list from {} returned successfully",supplier);
             return productList;
 
         } catch (SQLException e) {
+            logger.warn("Invalid id");
             throw new IllegalArgumentException("Invalid id");
         }
     }
@@ -180,9 +196,11 @@ public class ProductDaoDB implements ProductDao {
                 Product product = new Product(name, price, currency, description, productCategory, supplier);
                 productList.add(product);
             }
+            logger.info("Product list with {} returned successfully",productCategory);
             return productList;
 
         } catch (SQLException e) {
+            logger.warn("Invalid id");
             throw new IllegalArgumentException("Invalid id");
         }
     }

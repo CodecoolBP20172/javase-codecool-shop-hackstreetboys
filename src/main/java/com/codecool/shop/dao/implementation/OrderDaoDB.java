@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.AutoCloseable;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OrderDaoDB implements OrderDao {
 
@@ -22,6 +24,8 @@ public class OrderDaoDB implements OrderDao {
         return instance;
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(OrderDaoDB.class);
+
     public Order getOrderForUser(Integer userId) {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
@@ -33,11 +37,15 @@ public class OrderDaoDB implements OrderDao {
             if (resultSet.next()) {
                 Integer user_id = resultSet.getInt("user_id");
                 Order order = new Order(user_id);
+                logger.info("Order {} is found for user (id:{})",order, userId);
                 return order;
+
             }
+            logger.warn("Invalid id");
             throw new IllegalArgumentException("Invalid id");
 
         } catch (SQLException e) {
+            logger.error("Connection is not working");
             throw new IllegalArgumentException("Connection is not working", e);
         }
     }
@@ -65,9 +73,11 @@ public class OrderDaoDB implements OrderDao {
                 statement2.setInt(2, quantity);
                 statement2.setInt(3, order.getId());
                 statement2.execute();
+                logger.info(" {} is added to Order List", order);
             }
 
         } catch (SQLException e) {
+            logger.warn("Added order is null or invalid");
             throw new IllegalArgumentException("Invalid order or null", e);
         }
     }
@@ -98,12 +108,14 @@ public class OrderDaoDB implements OrderDao {
                     order.getAll().put(product, quantity);
 
                 }
-
+                logger.info("Order with Id:{} is found",id);
                 return order;
             }
+            logger.warn("There is no order with id:{}",id);
             throw new IllegalArgumentException("Invalid id");
 
         } catch (SQLException e) {
+            logger.error("Connection is not working");
             throw new IllegalArgumentException("Connection is not working", e);
         }
     }
@@ -116,8 +128,10 @@ public class OrderDaoDB implements OrderDao {
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement("DELETE FROM orders WHERE user_id = ?");
             statement.setInt(1, id);
             statement.execute();
+            logger.info("Order with Id:{} is removed",id);
 
         } catch (SQLException e) {
+            logger.warn("There is no order with id:{}",id);
             throw new IllegalArgumentException("Invalid order or null", e);
         }
     }
@@ -136,6 +150,7 @@ public class OrderDaoDB implements OrderDao {
 
                 orders.add(this.find(resultSet.getInt("user_id")));
             }
+            logger.info("Order list returned successfully");
             return orders;
 
         } catch (SQLException e) {
