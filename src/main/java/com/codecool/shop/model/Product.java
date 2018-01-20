@@ -37,8 +37,8 @@ public class Product extends BaseModel {
     }
 
     public void setDefaultCurrency(Currency defaultCurrency) {
-        logger.info("Price for product {} is {}",name,defaultCurrency);
         this.defaultCurrency = defaultCurrency;
+        logger.info("Price for product {} is {}",name,this.defaultCurrency);
     }
 
     public String getPrice() {
