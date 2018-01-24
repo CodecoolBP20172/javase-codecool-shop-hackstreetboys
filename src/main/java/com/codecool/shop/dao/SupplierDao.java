@@ -13,6 +13,11 @@ import java.util.List;
  */
 public interface SupplierDao {
 
+    void add(Supplier supplier) throws SQLException;
+    Supplier find(int id) throws SQLException;
+    void remove(int id) throws SQLException;
+    List<Supplier> getAll() throws SQLException;
+  
     /**
      * Method signature of adding suppliers.
      * @param supplier this is the supplier you would like to add

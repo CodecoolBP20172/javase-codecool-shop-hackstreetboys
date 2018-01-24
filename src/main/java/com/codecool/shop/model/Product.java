@@ -1,6 +1,9 @@
 package com.codecool.shop.model;
 
 import java.util.Currency;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * This is the Product class based on BaseModel.
@@ -15,6 +18,8 @@ public class Product extends BaseModel {
     private Currency defaultCurrency;
     private ProductCategory productCategory;
     private Supplier supplier;
+    private static final Logger logger = LoggerFactory.getLogger(Product.class);
+
 
     /**
      * Constructor, set the name, defaultPrice, currency, description, productCategory and supplier of the Product
@@ -30,14 +35,19 @@ public class Product extends BaseModel {
         this.setPrice(defaultPrice, currencyString);
         this.setSupplier(supplier);
         this.setProductCategory(productCategory);
+        logger.info("Product is created with {},{},{},{},{},{}",name,defaultPrice,currencyString,description,productCategory,supplier);
     }
+
 
     /**
      * @return defaultPrice of the actual product
      */
-    public float getDefaultPrice() { return defaultPrice; }
+    public float getDefaultPrice() {
+        logger.info("Default price for product {} is {}",name,defaultPrice);
+        return defaultPrice; }
 
     public void setDefaultPrice(float defaultPrice) {
+        logger.info("Default price for product {} is {}",name,defaultPrice);
         this.defaultPrice = defaultPrice;
     }
 
@@ -45,14 +55,17 @@ public class Product extends BaseModel {
      * @return the defaultCurrency of the actual product
      */
     public Currency getDefaultCurrency() {
+        logger.info("Currency for product {} is {}",name,defaultCurrency);
         return defaultCurrency;
     }
 
     public void setDefaultCurrency(Currency defaultCurrency) {
         this.defaultCurrency = defaultCurrency;
+        logger.info("Price for product {} is {}",name,this.defaultCurrency);
     }
 
     public String getPrice() {
+        logger.info("Price for product {} is {} {}",name,defaultPrice,defaultCurrency);
         return String.valueOf(this.defaultPrice) + " " + this.defaultCurrency.toString();
     }
 
@@ -62,6 +75,7 @@ public class Product extends BaseModel {
      * @param currency
      */
     public void setPrice(float price, String currency) {
+        logger.info("Price for product {} is {} {}",name,defaultPrice,defaultCurrency);
         this.defaultPrice = price;
         this.defaultCurrency = Currency.getInstance(currency);
     }
@@ -70,6 +84,7 @@ public class Product extends BaseModel {
      * @return the productCategory of the actual product
      */
     public ProductCategory getProductCategory() {
+        logger.info("Product category for product {} is {}",name,productCategory);
         return productCategory;
     }
 
@@ -78,6 +93,7 @@ public class Product extends BaseModel {
      * @param productCategory
      */
     public void setProductCategory(ProductCategory productCategory) {
+        logger.info("Product category for product {} is {}",name,productCategory);
         this.productCategory = productCategory;
     }
 
@@ -85,6 +101,7 @@ public class Product extends BaseModel {
      * @return the supplier of the actual product
      */
     public Supplier getSupplier() {
+        logger.info("Supplier for product {} is {}",name,supplier);
         return supplier;
     }
 
@@ -93,6 +110,7 @@ public class Product extends BaseModel {
      * @param supplier
      */
     public void setSupplier(Supplier supplier) {
+        logger.info("Supplier for product {} is {}",name,supplier);
         this.supplier = supplier;
     }
 

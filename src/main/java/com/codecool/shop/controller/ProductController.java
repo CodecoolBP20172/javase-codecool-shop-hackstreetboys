@@ -10,11 +10,13 @@ import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
+
+import java.sql.SQLException;
 import java.util.*;
 
 public class ProductController {
 
-    public static ModelAndView renderProducts(Request req, Response res, Integer userId) {
+    public static ModelAndView renderProducts(Request req, Response res, Integer userId) throws SQLException {
 
         ProductDao productDataStore = ProductDaoDB.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();
@@ -23,11 +25,8 @@ public class ProductController {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("categories", productCategoryDataStore.getAll());
-        System.out.println(productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
-        System.out.println(supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
-        System.out.println(productDataStore.getAll());
         params.put("numberOfItemInOrder", orderDataStore.find(userId).getNumberOfProducts());
 
         return new ModelAndView(params, "product/index");

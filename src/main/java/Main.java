@@ -12,6 +12,9 @@ import spark.Request;
 import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.*;
 
 
@@ -19,8 +22,10 @@ public class Main {
 
 
     public static Integer userId = 1;
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws SQLException {
+        logger.info("I am informative!");
 
         // default server settings
         exception(Exception.class, (e, req, res) -> e.printStackTrace());
@@ -41,13 +46,16 @@ public class Main {
         // Add this line to your project to enable the debug screen
 
         enableDebugScreen();
+
+
     }
 
-    public static void populateData() {
+    public static void populateData() throws SQLException {
 
-        ProductDao productDataStore = ProductDaoDB.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoDB.getInstance();
+        ProductDao productDataStore = ProductDaoMem.getInstance();
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+
 
         //setting up a new supplier
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
