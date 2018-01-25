@@ -33,6 +33,7 @@ public class Main {
         get("/", (Request req, Response res) -> new ThymeleafTemplateEngine().render( ProductController.renderProducts(req, res, userId) ));
 
         post("/filter", ProductController::renderProductsByFilter);
+        //post("/filter", (Request req, Response res) -> ProductController.renderProductsByFilter(req, res));
 
         post("/addToCart", (Request req, Response res) -> OrderController.renderOrder(req, res, userId));
 

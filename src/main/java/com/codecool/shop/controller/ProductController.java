@@ -27,11 +27,8 @@ public class ProductController {
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("categories", productCategoryDataStore.getAll());
-        System.out.println(productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
-        System.out.println(supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
-        System.out.println(productDataStore.getAll());
         params.put("numberOfItemInOrder", orderDataStore.find(userId).getNumberOfProducts());
 
         return new ModelAndView(params, "product/index");
@@ -39,26 +36,53 @@ public class ProductController {
 
     public static String renderProductsByFilter(Request req, Response res) {
         ProductDao productDataStore = ProductDaoDB.getInstance();
-        List<Product> products = productDataStore.getAll();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();
         SupplierDao supplierDataStore = SupplierDaoDB.getInstance();
 
-        Supplier supplierByFilter = supplierDataStore.getAll().stream().filter(supplier ->
-                Objects.equals(supplier.getName(), req.queryParams("supplierFilter"))).findFirst().orElse(null);
-        ProductCategory categoryByFilter = productCategoryDataStore.getAll().stream().filter(category ->
-                Objects.equals(category.getName(), req.queryParams("categoryFilter"))).findFirst().orElse(null);
+        ProductCategory categoryByFilter = null;
+        Supplier supplierByFilter = null;
 
-        System.out.println(supplierByFilter);
-        System.out.println(categoryByFilter);
+        for(ProductCategory productCategory : productCategoryDataStore.getAll()) {
+            if(productCategory.getName().equals(req.queryParams("categoryFilter"))) {
+                categoryByFilter = productCategory;
+            }
+        }
 
+        for(Supplier supplier : supplierDataStore.getAll()) {
+            if(supplier.getName().equals(req.queryParams("supplierFilter"))) {
+                supplierByFilter = supplier;
+            }
+        }
 
-        List<Product> filteredProducts = productDataStore.getAll().stream().filter(product ->
-                (product.getSupplier().getId() == supplierByFilter.getId() || Objects.equals(req.queryParams("supplierFilter"), "All Suppliers"))
-                        && (product.getProductCategory().getId() == categoryByFilter.getId() || Objects.equals(req.queryParams("categoryFilter"), "All Categories"))).collect(Collectors.toList());
+        List<Product> filteredProducts = new ArrayList<>();
+        List<Product> products = productDataStore.getAll();
 
+        for(Product product : products) {
 
-        System.out.println(filteredProducts);
+            try {
+                if (req.queryParams("supplierFilter").equals("All Suppliers") && req.queryParams("categoryFilter").equals("All Categories")) {
+                    filteredProducts.add(product);
+                }
+
+                if (req.queryParams("supplierFilter").equals("All Suppliers") && product.getProductCategory().getId() == categoryByFilter.getId()) {
+                    filteredProducts.add(product);
+                }
+
+                if (req.queryParams("categoryFilter").equals("All Categories") && product.getSupplier().getId() == supplierByFilter.getId()) {
+                    filteredProducts.add(product);
+                }
+
+                if (product.getSupplier().getId() == supplierByFilter.getId() && product.getProductCategory().getId() == categoryByFilter.getId()) {
+                    filteredProducts.add(product);
+                }
+            } catch (NullPointerException e) {
+                continue;
+            }
+
+        }
+
         Gson gson = new Gson();
+
         return gson.toJson(filteredProducts);
     }
 }

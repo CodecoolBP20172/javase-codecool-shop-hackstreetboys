@@ -113,7 +113,6 @@ public class ProductDaoDB implements ProductDao {
             List<Product> productList = new ArrayList<>();
 
             while (resultSet.next()) {
-
                 Product product = this.find(resultSet.getInt("id"));
                 productList.add(product);
             }

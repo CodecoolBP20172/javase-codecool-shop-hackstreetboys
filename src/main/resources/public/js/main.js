@@ -19,17 +19,22 @@ function addEventListenerToCartModal() {
 
 function addEventListenerToFilterButton() {
     $("#button").click(function () {
+        alert("VALAMI BAZD MEG")
         $.post("/filter",
             {
-                categoryFilter: $("#categoryFilter option:selected").text(),
-                supplierFilter: $("#supplierFilter option:selected").text()
+                categoryFilter: $("#categoryFilter").find("option:selected").text(),
+                supplierFilter: $("#supplierFilter").find("option:selected").text()
             },
+
         function(data, status) {
-            var products = JSON.parse(data);
-            var template = "";
-            products.forEach(function(product){
-                product["number"] = product.defaultPrice.toFixed(1);
-                
+            console.log(data)
+            let products = JSON.parse(data);
+            console.log(products)
+            let template = "";
+
+            for (const product of products) {
+
+
                 var string = "\n" +
                     "<div class=\"item col-xs-4 col-lg-4\">\n" +
                     "    <div class=\"thumbnail\">\n" +
@@ -39,7 +44,7 @@ function addEventListenerToFilterButton() {
                     "            <p class=\"group inner list-group-item-text\">{{description}}</p>\n" +
                     "            <div class=\"row\">\n" +
                     "                <div class=\"col-xs-12 col-md-6\">\n" +
-                    "                    <p class=\"lead\">{{number}} {{defaultCurrency}}</p>\n" +
+                    "                    <p class=\"lead\">{{defaultPrice}} {{defaultCurrency}}</p>\n" +
                     "                </div>\n" +
                     "                <div class=\"col-xs-12 col-md-6\">\n" +
                     "                    <button id={{id}} class=\"btn btn-success addToCart\">Add to cart</button>\n" +
@@ -51,7 +56,7 @@ function addEventListenerToFilterButton() {
 
                 template = template.concat(string);
                 template = Mustache.to_html(template, product);
-            });
+            }
             document.getElementById("products").innerHTML = template;
 
             addEventListenerToAddToCartButton();

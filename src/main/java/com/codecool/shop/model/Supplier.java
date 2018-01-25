@@ -11,9 +11,6 @@ import java.util.ArrayList;
  */
 public class Supplier extends BaseModel {
 
-
-    private String description;
-
     /**
      * Constructor, you can set the name and the description.
      *
@@ -21,8 +18,7 @@ public class Supplier extends BaseModel {
      * @param description information about the supplier (declared in BaseModel)
      */
     public Supplier(String name, String description) {
-        super(name);
-        this.description = description;
+        super(name, description);
     }
 
     /**
