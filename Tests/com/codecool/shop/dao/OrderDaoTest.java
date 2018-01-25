@@ -31,7 +31,8 @@ public abstract class OrderDaoTest <T extends OrderDao> {
 
     Order testOrder1ToAddOrder = new Order(5);
 
-
+    protected OrderDaoTest() throws DaoException {
+    }
 
 
     protected abstract T createInstance();
@@ -40,24 +41,27 @@ public abstract class OrderDaoTest <T extends OrderDao> {
     @BeforeEach
     public void testSetup() {
         instance = createInstance();
-        List<Order> productsToDel = new ArrayList<Order>(instance.getAll());
+        try {
+            List<Order> productsToDel = new ArrayList<Order>(instance.getAll());
 
-        for (Order order : productsToDel) {
-            int idToDel = order.getId();
-            instance.remove(idToDel);
+            for (Order order : productsToDel) {
+                int idToDel = order.getId();
+                instance.remove(idToDel);
+            }
+
+            testProduct1ToFillUpData.setId(1);
+            testOrder1ToFillUpOrder.add(testProduct1ToFillUpData);
+            testOrder1ToAddOrder.add(testProduct1ToFillUpData);
+
+
+            instance.add(testOrder1ToFillUpOrder);
+            instance.add(testOrder2ToFillUpOrder);
+            instance.add(testOrder3ToFillUpOrder);
+            instance.add(testOrder4ToFillUpOrder);
+        } catch (DaoException e) {
+            e.printStackTrace();
         }
-
-        testProduct1ToFillUpData.setId(1);
-        testOrder1ToFillUpOrder.add(testProduct1ToFillUpData);
-        testOrder1ToAddOrder.add(testProduct1ToFillUpData);
-
-
-        instance.add(testOrder1ToFillUpOrder);
-        instance.add(testOrder2ToFillUpOrder);
-        instance.add(testOrder3ToFillUpOrder);
-        instance.add(testOrder4ToFillUpOrder);
     }
-
 
     @Test
     public void testGetAllisWorking() {
@@ -67,10 +71,15 @@ public abstract class OrderDaoTest <T extends OrderDao> {
 
     @Test
     public  void testAdd() {
-        int previousSize = instance.getAll().size();
-        instance.add(testOrder1ToAddOrder);
-        int nextSize = instance.getAll().size();
-        assertEquals(previousSize, nextSize-1);
+        int previousSize = 0;
+        try {
+            previousSize = instance.getAll().size();
+            instance.add(testOrder1ToAddOrder);
+            int nextSize = instance.getAll().size();
+            assertEquals(previousSize, nextSize-1);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -84,8 +93,12 @@ public abstract class OrderDaoTest <T extends OrderDao> {
 
     @Test
     public void testFind() {
-        instance.add(testOrder1ToFillUpOrder);
-        assertTrue(instance.find(0) != null);
+        try {
+            instance.add(testOrder1ToFillUpOrder);
+            assertTrue(instance.find(0) != null);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     };
 
 
@@ -101,12 +114,20 @@ public abstract class OrderDaoTest <T extends OrderDao> {
 
     @Test
     public void testFindNotFound(){
-        assertEquals(null, instance.find(4));
+        try {
+            assertEquals(null, instance.find(4));
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @Test
     public void testGetAll() {
-        assertEquals(4, instance.getAll().size());
+        try {
+            assertEquals(4, instance.getAll().size());
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     };
 }

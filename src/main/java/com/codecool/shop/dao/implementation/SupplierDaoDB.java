@@ -1,5 +1,7 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.DaoException;
+import com.codecool.shop.dao.DaoRecordNotFoundException;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.db.ConnectionHandler;
 import com.codecool.shop.model.Supplier;
@@ -44,7 +46,7 @@ public class SupplierDaoDB implements SupplierDao {
      * @param supplier - is the supplier object, which we want to add to the database.
      */
     @Override
-    public void add(Supplier supplier) {
+    public void add(Supplier supplier) throws DaoException {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -56,7 +58,7 @@ public class SupplierDaoDB implements SupplierDao {
             statement.execute();
 
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid Supplier or null", e);
+            throw new DaoException(e);
         }
     }
 
@@ -69,7 +71,7 @@ public class SupplierDaoDB implements SupplierDao {
      * @throws IllegalArgumentException if the id is invalid.
      */
     @Override
-    public Supplier find(int id) {
+    public Supplier find(int id) throws DaoException{
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -83,10 +85,10 @@ public class SupplierDaoDB implements SupplierDao {
                 supplier.setId(id);
                 return supplier;
             }
-            throw new IllegalArgumentException("Invalid id");
+            throw new DaoRecordNotFoundException("couldn't find supplier with id " + id);
 
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Connection is not working");
+            throw new DaoException(e);
         }
     }
 
@@ -97,7 +99,7 @@ public class SupplierDaoDB implements SupplierDao {
      * @param id - is the id of the Supplier object in the database.
      */
     @Override
-    public void remove(int id) {
+    public void remove(int id) throws DaoException {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -105,10 +107,12 @@ public class SupplierDaoDB implements SupplierDao {
 
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             statement.setInt(1, id);
-            statement.execute();
+            if (statement.executeUpdate() == 0) {
+                throw new DaoRecordNotFoundException("couldn't find supplier with id " + id);
+            }
 
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid Supplier or null", e);
+            throw new DaoException(e);
         }
     }
 
@@ -119,7 +123,7 @@ public class SupplierDaoDB implements SupplierDao {
      * @return the ArrayList within Supplier objects.
      */
     @Override
-    public List<Supplier> getAll() {
+    public List<Supplier> getAll() throws DaoException {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -134,10 +138,13 @@ public class SupplierDaoDB implements SupplierDao {
 
                 resultList.add(supplier);
             }
+            if (resultList.isEmpty()) {
+                throw new DaoRecordNotFoundException("couldn't find suppliers");
+            }
             return resultList;
 
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid id");
+            throw new DaoException(e);
         }
     }
 }

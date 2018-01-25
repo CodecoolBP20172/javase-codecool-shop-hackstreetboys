@@ -1,5 +1,6 @@
 package com.codecool.shop.model;
 
+import com.codecool.shop.dao.DaoException;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
 
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public class Order extends BaseModel {
      *
      * @param userId belongs to the user, whose order it is
      */
-    public Order(Integer userId) {
+    public Order(Integer userId) throws DaoException {
         super("order");
         this.userId = userId;
         OrderDaoMem.getInstance().add(this);

@@ -13,6 +13,7 @@ import spark.Response;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import java.sql.*;
+import java.util.HashMap;
 
 
 public class Main {
@@ -23,6 +24,21 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         // default server settings
+        exception(DaoConnectionException.class, (e, req, res) -> {
+            res.body(new ThymeleafTemplateEngine().render(new ModelAndView(new HashMap<String, Object>(), "errors/error503")));
+            res.status(503);
+        });
+
+        exception(DaoRecordNotFoundException.class, (e, req, res) -> {
+            res.body(new ThymeleafTemplateEngine().render(new ModelAndView(new HashMap<String, Object>(), "errors/error400")));
+            res.status(404);
+        });
+
+        exception(DaoException.class, (e, req, res) -> {
+            res.body(new ThymeleafTemplateEngine().render(new ModelAndView(new HashMap<String, Object>(), "errors/Error500")));
+            res.status(500);
+        });
+
         exception(Exception.class, (e, req, res) -> e.printStackTrace());
         staticFileLocation("/public");
         port(8888);
@@ -43,7 +59,7 @@ public class Main {
         enableDebugScreen();
     }
 
-    public static void populateData() {
+    public static void populateData() throws DaoException {
 
         ProductDao productDataStore = ProductDaoDB.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();

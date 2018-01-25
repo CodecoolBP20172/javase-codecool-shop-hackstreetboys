@@ -1,9 +1,6 @@
 package com.codecool.shop.controller;
 
-import com.codecool.shop.dao.OrderDao;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.*;
 import com.codecool.shop.dao.implementation.*;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
@@ -18,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class ProductController {
 
-    public static ModelAndView renderProducts(Request req, Response res, Integer userId) {
+    public static ModelAndView renderProducts(Request req, Response res, Integer userId) throws DaoException{
 
         ProductDao productDataStore = ProductDaoDB.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();
@@ -26,6 +23,7 @@ public class ProductController {
         OrderDao orderDataStore = OrderDaoDB.getInstance();
 
         HashMap<String, Object> params = new HashMap<>();
+        //System.out.println(productDataStore.find(10000));
         params.put("categories", productCategoryDataStore.getAll());
         System.out.println(productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
@@ -37,7 +35,8 @@ public class ProductController {
         return new ModelAndView(params, "product/index");
     }
 
-    public static String renderProductsByFilter(Request req, Response res) {
+
+    public static String renderProductsByFilter(Request req, Response res) throws DaoException {
         ProductDao productDataStore = ProductDaoDB.getInstance();
         List<Product> products = productDataStore.getAll();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();

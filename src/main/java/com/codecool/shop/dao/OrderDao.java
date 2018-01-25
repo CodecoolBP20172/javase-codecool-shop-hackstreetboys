@@ -3,6 +3,7 @@ package com.codecool.shop.dao;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.model.Order;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public interface OrderDao {
      *
      * @param order collection of products what the user would like to buy
      */
-    void add(Order order);
+    void add(Order order) throws DaoException;
 
     /**
      * Method signature of finding orders
@@ -25,20 +26,20 @@ public interface OrderDao {
      * @param id unique identifier what belongs to one specific order what you would like to find
      * @return the order which belongs to that unique id
      */
-    Order find(int id);
+    Order find(int id) throws DaoException;
 
     /**
      * Method signature of removing orders
      *
      * @param id unique identifier what belongs to one specific order what you would like to remove
      */
-    void remove(int id);
+    void remove(int id) throws DaoException;
 
     /**
      * Method signature of accessing all orders.
      *
      * @return all of the orders
      */
-    List<Order> getAll();
+    List<Order> getAll() throws DaoException;
 
 }

@@ -18,7 +18,7 @@ public interface ProductCategoryDao {
      *
      * @param category this is the product category you would like to add
      */
-    void add(ProductCategory category);
+    void add(ProductCategory category) throws DaoException;
 
     /**
      * Method signature of finding a product category
@@ -26,20 +26,20 @@ public interface ProductCategoryDao {
      * @param id unique identifier that belongs to one specific product category what you would like to find
      * @return the product category which belongs to that unique id
      */
-    ProductCategory find(int id);
+    ProductCategory find(int id) throws DaoException;
 
     /**
      * Method signature of removing a product category
      *
      * @param id unique identifier that belongs to one specific product category what you would like to delete
      */
-    void remove(int id);
+    void remove(int id) throws DaoException;
 
     /**
      * Method signature of accessing all of the product categories
      *
      * @return all product categories
      */
-    List<ProductCategory> getAll();
+    List<ProductCategory> getAll() throws DaoException;
 
 }

@@ -26,20 +26,23 @@ public abstract class ProductCategoryDaoTest <T extends ProductCategoryDao> {
     @BeforeEach
     public void testSetup() {
         instance = createInstance();
+        try {
+            List<ProductCategory> prodCatsToDel = new ArrayList<ProductCategory>(instance.getAll());
 
-        List<ProductCategory> prodCatsToDel = new ArrayList<ProductCategory>(instance.getAll());
+            for (ProductCategory product : prodCatsToDel) {
+                int idToDel = product.getId();
+                instance.remove(idToDel);
+            }
 
-        for (ProductCategory product : prodCatsToDel) {
-            int idToDel = product.getId();
-            instance.remove(idToDel);
+            instance.add(testProdCat1);
+            testProdCat1.setId(1);
+            instance.add(testProdCat2);
+            testProdCat2.setId(2);
+            instance.add(testProdCat3);
+            testProdCat3.setId(4);
+        } catch (DaoException e) {
+            e.printStackTrace();
         }
-
-        instance.add(testProdCat1);
-        testProdCat1.setId(1);
-        instance.add(testProdCat2);
-        testProdCat2.setId(2);
-        instance.add(testProdCat3);
-        testProdCat3.setId(4);
     }
 
 
@@ -51,10 +54,15 @@ public abstract class ProductCategoryDaoTest <T extends ProductCategoryDao> {
 
     @Test
     public  void testAdd() {
-        int previousSize = instance.getAll().size();
-        instance.add(prodCatToAdd);
-        int nextSize = instance.getAll().size();
-        assertEquals(previousSize+1, nextSize);
+        int previousSize = 0;
+        try {
+            previousSize = instance.getAll().size();
+            instance.add(prodCatToAdd);
+            int nextSize = instance.getAll().size();
+            assertEquals(previousSize+1, nextSize);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -68,7 +76,11 @@ public abstract class ProductCategoryDaoTest <T extends ProductCategoryDao> {
 
     @Test
     public void testFind() {
-        assertTrue(instance.find(1) != null);
+        try {
+            assertTrue(instance.find(1) != null);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -82,12 +94,20 @@ public abstract class ProductCategoryDaoTest <T extends ProductCategoryDao> {
     }
 
     @Test void testFindNotFound(){
-        assertEquals(null, instance.find(3));
+        try {
+            assertEquals(null, instance.find(3));
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @Test
     public void testGetAll() {
-        assertEquals(3, instance.getAll().size());
+        try {
+            assertEquals(3, instance.getAll().size());
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 }

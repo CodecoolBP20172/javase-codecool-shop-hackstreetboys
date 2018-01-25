@@ -18,7 +18,7 @@ public interface SupplierDao {
      *
      * @param supplier this is the supplier you would like to add
      */
-    void add(Supplier supplier);
+    void add(Supplier supplier) throws DaoException;
 
     /**
      * Method signature of finding suppliers
@@ -26,19 +26,19 @@ public interface SupplierDao {
      * @param id unique identifier that belongs to one specific supplier what you would like to find
      * @return the supplier which belongs to that unique id
      */
-    Supplier find(int id);
+    Supplier find(int id) throws DaoException;
 
     /**
      * Method signature of removing suppliers
      *
      * @param id unique identifier that belongs to one specific supplier what you would like to remove
      */
-    void remove(int id);
+    void remove(int id) throws  DaoException;
 
     /**
      * Method signature of accessing all suppliers
      *
      * @return all of the suppliers
      */
-    List<Supplier> getAll();
+    List<Supplier> getAll() throws DaoException;
 }

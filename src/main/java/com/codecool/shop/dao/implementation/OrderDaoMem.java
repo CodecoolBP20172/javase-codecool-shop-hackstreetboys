@@ -1,5 +1,7 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.DaoException;
+import com.codecool.shop.dao.DaoRecordNotFoundException;
 import com.codecool.shop.dao.OrderDao;
 import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
@@ -22,7 +24,7 @@ public class OrderDaoMem implements OrderDao {
         return instance;
     }
 
-    public Order getOrderForUser(Integer userId) {
+    public Order getOrderForUser(Integer userId) throws DaoException {
         for (Order order : OrderDaoMem.getInstance().getAll()) {
             if (Objects.equals(order.getUserId(), userId)) {
                 return order;
@@ -33,17 +35,18 @@ public class OrderDaoMem implements OrderDao {
 
 
     @Override
-    public void add(Order order) {
+    public void add(Order order) throws DaoException {
         if (order != null) {
             DATA.add(order);
         } else {
-            throw new NullPointerException();
+            //throw new NullPointerException();
+            throw new DaoException("tried to add null");
         }
     }
 
 
     @Override
-    public Order find(int id) {
+    public Order find(int id) throws DaoException {
         ArrayList<Integer> maxMinId = new ArrayList();
         for (Order order : DATA) {
             maxMinId.add(order.getId());
@@ -51,13 +54,13 @@ public class OrderDaoMem implements OrderDao {
         if (id >= Collections.min(maxMinId) && id <= Collections.max(maxMinId)) {
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
         } else {
-            throw new IllegalArgumentException();
+            throw new DaoRecordNotFoundException("couldn't find order with id " + id);
         }
     }
 
 
     @Override
-    public void remove(int id) {
+    public void remove(int id) throws DaoException {
         DATA.remove(find(id));
     }
 

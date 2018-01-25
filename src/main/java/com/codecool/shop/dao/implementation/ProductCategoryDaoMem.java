@@ -1,6 +1,8 @@
 package com.codecool.shop.dao.implementation;
 
 
+import com.codecool.shop.dao.DaoException;
+import com.codecool.shop.dao.DaoRecordNotFoundException;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
@@ -30,27 +32,27 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
     }
 
     @Override
-    public void add(ProductCategory category) {
+    public void add(ProductCategory category) throws DaoException {
         if (category != null) {
             category.setId(maxId.getAndIncrement());
             DATA.add(category);
         } else {
-            throw new NullPointerException();
+            throw new DaoException("You tried to add null");
         }
     }
 
 
     @Override
-    public ProductCategory find(int id) {
+    public ProductCategory find(int id) throws DaoException {
         if (id <= maxId.intValue() && id >= 1) {
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
         } else {
-            throw new IllegalArgumentException();
+            throw new DaoRecordNotFoundException("couldn't find product category with id " + id);
         }
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(int id) throws DaoException {
         DATA.remove(find(id));
     }
 

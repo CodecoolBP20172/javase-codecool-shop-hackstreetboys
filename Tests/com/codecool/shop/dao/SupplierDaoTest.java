@@ -3,6 +3,7 @@ package com.codecool.shop.dao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.Supplier;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -24,31 +25,40 @@ public abstract class SupplierDaoTest <T extends SupplierDao> {
 
 
     @BeforeEach
-    public void testSetup() {
+    public void testSetup()  {
         instance = createInstance();
 
-        List<Supplier> suppliersToDel = new ArrayList<Supplier>(instance.getAll());
+        try {
+            List<Supplier> suppliersToDel= new ArrayList<Supplier>(instance.getAll());
+            for (Supplier supplier : suppliersToDel) {
+                int idToDel = supplier.getId();
+                instance.remove(idToDel);
+            }
 
-        for (Supplier supplier : suppliersToDel) {
-            int idToDel = supplier.getId();
-            instance.remove(idToDel);
+            instance.add(testSupplier1ToFillUpData);
+            testSupplier1ToFillUpData.setId(1);
+            instance.add(testSupplier2ToFillUpData);
+            testSupplier2ToFillUpData.setId(2);
+            instance.add(testSupplier3ToFillUpData);
+            testSupplier3ToFillUpData.setId(4);
+        }catch (DaoException e) {
+            e.printStackTrace();
         }
 
-        instance.add(testSupplier1ToFillUpData);
-        testSupplier1ToFillUpData.setId(1);
-        instance.add(testSupplier2ToFillUpData);
-        testSupplier2ToFillUpData.setId(2);
-        instance.add(testSupplier3ToFillUpData);
-        testSupplier3ToFillUpData.setId(4);
     }
 
 
     @Test
     public  void testAdd() {
-        int previousSize = instance.getAll().size();
-        instance.add(supplierToTestAddMethod);
-        int nextSize = instance.getAll().size();
-        assertEquals(previousSize+1, nextSize);
+        int previousSize = 0;
+        try {
+            previousSize = instance.getAll().size();
+            instance.add(supplierToTestAddMethod);
+            int nextSize = instance.getAll().size();
+            assertEquals(previousSize+1, nextSize);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -62,7 +72,11 @@ public abstract class SupplierDaoTest <T extends SupplierDao> {
 
     @Test
     public void testFind() {
-        assertTrue(instance.find(1) != null);
+        try {
+            assertTrue(instance.find(1) != null);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -77,13 +91,21 @@ public abstract class SupplierDaoTest <T extends SupplierDao> {
 
     @Test
     public void testFindNotFoud(){
-        assertEquals(null, instance.find(3));
+        try {
+            assertEquals(null, instance.find(3));
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
 
     }
 
 
     @Test
     public void testGetAll() {
-        assertEquals(3, instance.getAll().size());
+        try {
+            assertEquals(3, instance.getAll().size());
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 }

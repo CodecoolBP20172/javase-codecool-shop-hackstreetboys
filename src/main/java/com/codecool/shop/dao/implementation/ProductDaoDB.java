@@ -1,11 +1,13 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.DaoConnectionException;
+import com.codecool.shop.dao.DaoException;
+import com.codecool.shop.dao.DaoRecordNotFoundException;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.db.ConnectionHandler;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
-import org.apache.commons.lang3.ObjectUtils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +34,7 @@ public class ProductDaoDB implements ProductDao {
     }
 
     @Override
-    public void add(Product product) {
+    public void add(Product product) throws DaoException {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -51,12 +53,12 @@ public class ProductDaoDB implements ProductDao {
             statement.execute();
 
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid Product category or null", e);
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Product find(int id) {
+    public Product find(int id) throws DaoException {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -78,31 +80,31 @@ public class ProductDaoDB implements ProductDao {
                 product.setId(id);
                 return product;
             }
-            throw new IllegalArgumentException("Invalid id");
-
+            throw new DaoRecordNotFoundException("couldn't find product with id " + id);
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Connection is not working", e);
+            throw new DaoException(e);
         }
     }
 
 
     @Override
-    public void remove(int id) {
+    public void remove(int id) throws DaoException {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
             String sqlStatement = "DELETE FROM products WHERE id = ?";
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             statement.setInt(1, id);
-            statement.execute();
-
+            if (statement.executeUpdate() == 0) {
+                throw new DaoRecordNotFoundException("couldn't find product with id " + id);
+            }
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid Product category or null", e);
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public List<Product> getAll() {
+    public List<Product> getAll() throws DaoException{
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -117,15 +119,17 @@ public class ProductDaoDB implements ProductDao {
                 Product product = this.find(resultSet.getInt("id"));
                 productList.add(product);
             }
-            return productList;
-
+            if (!productList.isEmpty()) {
+                return productList;
+            }
+            throw new DaoRecordNotFoundException("couldn't find products");
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid id");
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public List<Product> getBy(Supplier supplier) {
+    public List<Product> getBy(Supplier supplier) throws DaoException {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -142,15 +146,18 @@ public class ProductDaoDB implements ProductDao {
                 Product product = find(resultSet.getInt("id"));
                 productList.add(product);
             }
-            return productList;
-
+            if (!productList.isEmpty()) {
+                return productList;
+            }
+            throw new DaoRecordNotFoundException("Invalid supplier");
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid id");
+            throw new DaoException(e);
         }
     }
 
+
     @Override
-    public List<Product> getBy(ProductCategory productCategory) {
+    public List<Product> getBy(ProductCategory productCategory) throws DaoException {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
@@ -168,10 +175,13 @@ public class ProductDaoDB implements ProductDao {
                 Product product = find(resultSet.getInt("id"));
                 productList.add(product);
             }
-            return productList;
+            if (!productList.isEmpty()) {
+                return productList;
+            }
+            throw new DaoRecordNotFoundException("Invalid productcategory");
 
         } catch (SQLException e) {
-            throw new IllegalArgumentException("Invalid id");
+            throw new DaoException(e);
         }
     }
 }

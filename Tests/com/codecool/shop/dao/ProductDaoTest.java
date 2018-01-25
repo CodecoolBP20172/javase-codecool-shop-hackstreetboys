@@ -41,22 +41,26 @@ public abstract class ProductDaoTest<T extends ProductDao> {
     @BeforeEach
     public void testSetup() {
         instance = createInstance();
+        try {
+            List<Product> productsToDel = new ArrayList<Product>(instance.getAll());
 
-        List<Product> productsToDel = new ArrayList<Product>(instance.getAll());
+            for (Product product : productsToDel) {
+                int idToDel = product.getId();
+                instance.remove(idToDel);
+            }
 
-        for (Product product : productsToDel) {
-            int idToDel = product.getId();
-            instance.remove(idToDel);
+            instance.add(testProduct1ToFillUpData);
+            testProduct1ToFillUpData.setId(1);
+            instance.add(testProduct2ToFillUpData);
+            testProduct2ToFillUpData.setId(2);
+            instance.add(testProduct3ToFillUpData);
+            testProduct3ToFillUpData.setId(3);
+            instance.add(testProduct4ToFillUpData);
+            testProduct4ToFillUpData.setId(5);
+
+        } catch (DaoException e) {
+            e.printStackTrace();
         }
-
-        instance.add(testProduct1ToFillUpData);
-        testProduct1ToFillUpData.setId(1);
-        instance.add(testProduct2ToFillUpData);
-        testProduct2ToFillUpData.setId(2);
-        instance.add(testProduct3ToFillUpData);
-        testProduct3ToFillUpData.setId(3);
-        instance.add(testProduct4ToFillUpData);
-        testProduct4ToFillUpData.setId(5);
     }
 
 
@@ -68,10 +72,15 @@ public abstract class ProductDaoTest<T extends ProductDao> {
 
     @Test
     public void testAdd() {
-        int previousSize = instance.getAll().size();
-        instance.add(productToTestAddMethod);
-        int nextSize = instance.getAll().size();
-        assertEquals(previousSize + 1, nextSize);
+        int previousSize = 0;
+        try {
+            previousSize = instance.getAll().size();
+            instance.add(productToTestAddMethod);
+            int nextSize = instance.getAll().size();
+            assertEquals(previousSize + 1, nextSize);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -85,7 +94,11 @@ public abstract class ProductDaoTest<T extends ProductDao> {
 
     @Test
     public void testFind() {
-        assertTrue(instance.find(1) != null);
+        try {
+            assertTrue(instance.find(1) != null);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
     ;
@@ -102,29 +115,49 @@ public abstract class ProductDaoTest<T extends ProductDao> {
 
     @Test
     public void testFindNotFound() {
-        assertEquals(null, instance.find(4));
+        try {
+            assertEquals(null, instance.find(4));
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @Test
     public void testGetAll() {
-        assertEquals(4, instance.getAll().size());
+        try {
+            assertEquals(4, instance.getAll().size());
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
     ;
 
     @Test
     public void testGetBySup() {
-        assertEquals(testProduct4ToFillUpData.toString(), instance.getBy(testSupplier2ToFillUpData).get(0).toString());
+        try {
+            assertEquals(testProduct4ToFillUpData.toString(), instance.getBy(testSupplier2ToFillUpData).get(0).toString());
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testGetByProdCat() {
-        assertEquals(testProduct1ToFillUpData.toString(), instance.getBy(testCategoryToFillUpData).get(0).toString());
+        try {
+            assertEquals(testProduct1ToFillUpData.toString(), instance.getBy(testCategoryToFillUpData).get(0).toString());
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testGetBySpecProdCat() {
-        assertEquals(testProduct2ToFillUpData.toString(), instance.getBy(testCategory2ToFillUpData).get(0).toString());
+        try {
+            assertEquals(testProduct2ToFillUpData.toString(), instance.getBy(testCategory2ToFillUpData).get(0).toString());
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
     }
 }

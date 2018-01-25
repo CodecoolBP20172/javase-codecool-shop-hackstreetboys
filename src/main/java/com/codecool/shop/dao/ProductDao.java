@@ -19,7 +19,7 @@ public interface ProductDao {
      *
      * @param product this is the product you would like to add
      */
-    void add(Product product);
+    void add(Product product) throws DaoException;
 
     /**
      * Method signature of finding products
@@ -27,21 +27,21 @@ public interface ProductDao {
      * @param id unique identifier that belongs to one specific product what you would like to find
      * @return the product which belongs to that unique id
      */
-    Product find(int id);
+    Product find(int id) throws DaoException;
 
     /**
      * Method signature of removing products
      *
      * @param id unique identifier that belongs to one specific product what you would like to remove
      */
-    void remove(int id);
+    void remove(int id) throws DaoException;
 
     /**
      * Method signature of accessing all products
      *
      * @return all products
      */
-    List<Product> getAll();
+    List<Product> getAll() throws DaoException;
 
     /**
      * Method signature of accessing those products which have the same supplier
@@ -49,7 +49,7 @@ public interface ProductDao {
      * @param supplier whose products you would like to access
      * @return the products of the specific supplier
      */
-    List<Product> getBy(Supplier supplier);
+    List<Product> getBy(Supplier supplier) throws DaoException;
 
     /**
      * Method signature of accessing those products which have the same product category
@@ -57,5 +57,5 @@ public interface ProductDao {
      * @param productCategory the products you would like to access belong to this product category
      * @return the products belongs to that specific product category
      */
-    List<Product> getBy(ProductCategory productCategory);
+    List<Product> getBy(ProductCategory productCategory) throws DaoException;
 }

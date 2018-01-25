@@ -1,6 +1,8 @@
 package com.codecool.shop.dao.implementation;
 
 
+import com.codecool.shop.dao.DaoException;
+import com.codecool.shop.dao.DaoRecordNotFoundException;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
@@ -46,12 +48,12 @@ public class ProductDaoMem implements ProductDao {
      * Implementation of the ProductDao interface add(Product product) method.
      */
     @Override
-    public void add(Product product) {
+    public void add(Product product) throws DaoException {
         if (product != null) {
             product.setId(maxId.getAndIncrement());
             DATA.add(product);
         } else {
-            throw new NullPointerException();
+            throw new DaoException("tried to add null");
         }
     }
 
@@ -60,11 +62,11 @@ public class ProductDaoMem implements ProductDao {
      * Implementation of the ProductDao interface find(int id) method.
      */
     @Override
-    public Product find(int id) {
+    public Product find(int id) throws DaoException {
         if (id <= maxId.intValue() && id >= 1) {
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
         } else {
-            throw new IllegalArgumentException();
+            throw new DaoRecordNotFoundException("couldn't find product with id " + id);
         }
     }
 
@@ -72,7 +74,7 @@ public class ProductDaoMem implements ProductDao {
      * Implementation of ProductDao interface remove(int id) method.
      */
     @Override
-    public void remove(int id) {
+    public void remove(int id) throws DaoException {
         DATA.remove(find(id));
     }
 

@@ -1,5 +1,7 @@
 package com.codecool.shop.dao.implementation;
 
+import com.codecool.shop.dao.DaoException;
+import com.codecool.shop.dao.DaoRecordNotFoundException;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.Supplier;
@@ -45,12 +47,12 @@ public class SupplierDaoMem implements SupplierDao {
      * @param supplier - is the supplier object, which we want to add to DATA.
      */
     @Override
-    public void add(Supplier supplier) {
+    public void add(Supplier supplier) throws DaoException {
         if (supplier != null) {
             supplier.setId(maxId.getAndIncrement());
             DATA.add(supplier);
         } else {
-            throw new NullPointerException();
+            throw new DaoException("tried to add null");
         }
     }
 
@@ -63,11 +65,11 @@ public class SupplierDaoMem implements SupplierDao {
      * @throws IllegalArgumentException if id is invalid
      */
     @Override
-    public Supplier find(int id) {
+    public Supplier find(int id) throws DaoException {
         if (id <= maxId.intValue() && id >= 1) {
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
         } else {
-            throw new IllegalArgumentException();
+            throw new DaoRecordNotFoundException("couldn't find supplier with id " + id);
         }
     }
 
@@ -78,7 +80,7 @@ public class SupplierDaoMem implements SupplierDao {
      * @param id - is the id of the Supplier object.
      */
     @Override
-    public void remove(int id) {
+    public void remove(int id) throws DaoException {
         DATA.remove(find(id));
     }
 

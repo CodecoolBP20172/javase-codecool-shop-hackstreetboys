@@ -1,5 +1,6 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.DaoException;
 import com.codecool.shop.dao.implementation.OrderDaoDB;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoDB;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 public class OrderController {
 
-    public static String renderOrder(Request req, Response res, Integer userId) {
+    public static String renderOrder(Request req, Response res, Integer userId) throws DaoException{
 
         Integer productId = Integer.valueOf(req.queryParams("productId"));
         Product product = ProductDaoDB.getInstance().find(productId);
@@ -27,7 +28,7 @@ public class OrderController {
         return gson.toJson(order.getNumberOfProducts());
     }
 
-    public static Map renderModal(Request req, Response res, Integer userId) {
+    public static Map renderModal(Request req, Response res, Integer userId) throws DaoException {
 
         Order order = OrderDaoDB.getInstance().getOrderForUser(userId);
 
