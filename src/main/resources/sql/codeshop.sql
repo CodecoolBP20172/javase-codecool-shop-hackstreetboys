@@ -64,8 +64,8 @@ DROP SEQUENCE IF EXISTS public.orders_id_seq;
 CREATE TABLE public.orders
 (
   id serial NOT NULL,
-     user_id integer,
-     numberOfProducts integer,
+  user_id integer,
+  numberOfProducts integer,
   totalPrice float
 );
 

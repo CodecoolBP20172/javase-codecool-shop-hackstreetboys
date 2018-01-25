@@ -53,11 +53,7 @@ public class ProductCategoryDaoDB implements ProductCategoryDao {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                ProductCategory productCategory = new ProductCategory(
-                        resultSet.getString("name"),
-                        resultSet.getString("description"),
-                        resultSet.getString("department")
-                );
+                ProductCategory productCategory = new ProductCategory(resultSet.getString("name"), resultSet.getString("description"), resultSet.getString("department"));
                 productCategory.setId(id);
                 return productCategory;
             }
@@ -94,7 +90,7 @@ public class ProductCategoryDaoDB implements ProductCategoryDao {
             List<ProductCategory> resultList = new ArrayList<>();
 
             while (resultSet.next()) {
-                ProductCategory productCategory =this.find(resultSet.getInt("id"));
+                ProductCategory productCategory = this.find(resultSet.getInt("id"));
 
                 resultList.add(productCategory);
             }

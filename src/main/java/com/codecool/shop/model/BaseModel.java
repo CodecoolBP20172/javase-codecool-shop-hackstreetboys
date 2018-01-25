@@ -19,6 +19,7 @@ public class BaseModel {
 
     /**
      * This is one of the constructors, which sets the.
+     *
      * @param name - This will be the model's default name
      */
     public BaseModel(String name) {
@@ -28,7 +29,8 @@ public class BaseModel {
 
     /**
      * This is the second constructor, which sets the:
-     * @param name - as the name of the BaseModel
+     *
+     * @param name        - as the name of the BaseModel
      * @param description - what is a short summary about it
      */
     public BaseModel(String name, String description) {
@@ -37,16 +39,17 @@ public class BaseModel {
     }
 
     /**
-     *
      * @return the id of the instance.
      */
     public int getId() {
         return id;
     }
 
-    /** Set the id of the instance.
+    /**
+     * Set the id of the instance.
+     *
      * @param id - this will be the model's id
-     * */
+     */
     public void setId(int id) {
         this.id = id;
     }
@@ -58,9 +61,11 @@ public class BaseModel {
         return name;
     }
 
-    /** set the name of the instance.
+    /**
+     * set the name of the instance.
+     *
      * @param name - this will be the model's (new) name
-     * */
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -72,9 +77,11 @@ public class BaseModel {
         return description;
     }
 
-    /** set the description of the instance
+    /**
+     * set the description of the instance
+     *
      * @param description - This will be the model's description
-     * */
+     */
     public void setDescription(String description) {
         this.description = description;
     }

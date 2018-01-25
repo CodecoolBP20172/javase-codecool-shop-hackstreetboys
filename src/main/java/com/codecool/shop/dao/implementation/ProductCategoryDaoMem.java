@@ -31,11 +31,10 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     @Override
     public void add(ProductCategory category) {
-        if (category != null){
+        if (category != null) {
             category.setId(maxId.getAndIncrement());
             DATA.add(category);
-        }
-        else {
+        } else {
             throw new NullPointerException();
         }
     }
@@ -43,7 +42,7 @@ public class ProductCategoryDaoMem implements ProductCategoryDao {
 
     @Override
     public ProductCategory find(int id) {
-        if (id <= maxId.intValue() && id >= 1 ) {
+        if (id <= maxId.intValue() && id >= 1) {
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
         } else {
             throw new IllegalArgumentException();

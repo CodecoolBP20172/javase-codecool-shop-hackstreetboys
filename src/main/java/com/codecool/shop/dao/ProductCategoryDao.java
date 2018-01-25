@@ -15,12 +15,14 @@ public interface ProductCategoryDao {
 
     /**
      * Method signature of adding product category
+     *
      * @param category this is the product category you would like to add
      */
     void add(ProductCategory category);
 
     /**
      * Method signature of finding a product category
+     *
      * @param id unique identifier that belongs to one specific product category what you would like to find
      * @return the product category which belongs to that unique id
      */
@@ -28,12 +30,14 @@ public interface ProductCategoryDao {
 
     /**
      * Method signature of removing a product category
+     *
      * @param id unique identifier that belongs to one specific product category what you would like to delete
      */
     void remove(int id);
 
     /**
      * Method signature of accessing all of the product categories
+     *
      * @return all product categories
      */
     List<ProductCategory> getAll();

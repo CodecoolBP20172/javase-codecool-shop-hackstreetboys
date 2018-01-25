@@ -7,13 +7,13 @@ import java.lang.AutoCloseable;
 
 public class ConnectionHandler implements AutoCloseable {
 
-    private static final String DATABASE = "jdbc:postgresql://localhost:5432/farkasdaniel";
-    private static final String DB_USER = "farkasdaniel";
-    private static final String DB_PASSWORD = "1211";
+    private static final String DATABASE = "jdbc:postgresql://localhost:5432/codeshop";
+    private static final String DB_USER = "daniel";
+    private static final String DB_PASSWORD = "asus7777";
 
     Connection connection;
 
-    public ConnectionHandler()  {
+    public ConnectionHandler() {
     }
 
     public Connection getConnection() throws SQLException {
@@ -22,12 +22,12 @@ public class ConnectionHandler implements AutoCloseable {
     }
 
     @Override
-    public void close()  {
+    public void close() {
         if (connection != null) {
-           try {
-               connection.close();
-           } catch (Exception e) {
-           }
+            try {
+                connection.close();
+            } catch (Exception e) {
+            }
         }
 
     }

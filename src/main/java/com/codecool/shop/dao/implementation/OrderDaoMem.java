@@ -34,7 +34,7 @@ public class OrderDaoMem implements OrderDao {
 
     @Override
     public void add(Order order) {
-        if (order!=null){
+        if (order != null) {
             DATA.add(order);
         } else {
             throw new NullPointerException();
@@ -43,22 +43,23 @@ public class OrderDaoMem implements OrderDao {
 
 
     @Override
-    public Order find(int id)  {
-        ArrayList <Integer> maxMinId = new ArrayList();
-        for (Order order:DATA) {
+    public Order find(int id) {
+        ArrayList<Integer> maxMinId = new ArrayList();
+        for (Order order : DATA) {
             maxMinId.add(order.getId());
         }
-        if(id >= Collections.min(maxMinId) && id <= Collections.max(maxMinId)){
+        if (id >= Collections.min(maxMinId) && id <= Collections.max(maxMinId)) {
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
-        }
-        else{
+        } else {
             throw new IllegalArgumentException();
         }
     }
 
 
     @Override
-    public void remove(int id) { DATA.remove(find(id)); }
+    public void remove(int id) {
+        DATA.remove(find(id));
+    }
 
 
     @Override

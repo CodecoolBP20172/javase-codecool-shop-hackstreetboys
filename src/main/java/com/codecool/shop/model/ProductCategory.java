@@ -16,12 +16,13 @@ public class ProductCategory extends BaseModel {
 
     /**
      * Constructor, set the name, department and description of the ProductCategory.
-     * @param name the ProductCategory's name (declared in BaseModel)
-     * @param department its department, where it belongs (declared in BaseModel)
+     *
+     * @param name        the ProductCategory's name (declared in BaseModel)
+     * @param department  its department, where it belongs (declared in BaseModel)
      * @param description short summary about it
      */
     public ProductCategory(String name, String department, String description) {
-        super(name);
+        super(name,description);
         this.department = department;
     }
 
@@ -40,14 +41,6 @@ public class ProductCategory extends BaseModel {
      * @return the ProductCategory's name, department and description in printable format
      */
     public String toString() {
-        return String.format(
-                "id: %1$d," +
-                        "name: %2$s, " +
-                        "department: %3$s, " +
-                        "description: %4$s",
-                this.id,
-                this.name,
-                this.department,
-                this.description);
+        return String.format("id: %1$d," + "name: %2$s, " + "department: %3$s, " + "description: %4$s", this.id, this.name, this.department, this.description);
     }
 }

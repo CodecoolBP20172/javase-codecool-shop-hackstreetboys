@@ -14,12 +14,14 @@ import java.util.List;
 public interface OrderDao {
     /**
      * Method signature of adding orders
+     *
      * @param order collection of products what the user would like to buy
      */
     void add(Order order);
 
     /**
      * Method signature of finding orders
+     *
      * @param id unique identifier what belongs to one specific order what you would like to find
      * @return the order which belongs to that unique id
      */
@@ -27,11 +29,14 @@ public interface OrderDao {
 
     /**
      * Method signature of removing orders
+     *
      * @param id unique identifier what belongs to one specific order what you would like to remove
      */
     void remove(int id);
 
-    /** Method signature of accessing all orders.
+    /**
+     * Method signature of accessing all orders.
+     *
      * @return all of the orders
      */
     List<Order> getAll();

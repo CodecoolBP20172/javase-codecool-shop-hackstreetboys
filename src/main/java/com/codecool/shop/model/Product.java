@@ -18,12 +18,13 @@ public class Product extends BaseModel {
 
     /**
      * Constructor, set the name, defaultPrice, currency, description, productCategory and supplier of the Product
-     * @param name name of the actual product
-     * @param defaultPrice the selling price
-     * @param currencyString the currency of the product
-     * @param description description about the product
+     *
+     * @param name            name of the actual product
+     * @param defaultPrice    the selling price
+     * @param currencyString  the currency of the product
+     * @param description     description about the product
      * @param productCategory products grouped by some properties. One product category covers more products
-     * @param supplier the supplier of the actual product
+     * @param supplier        the supplier of the actual product
      */
     public Product(String name, float defaultPrice, String currencyString, String description, ProductCategory productCategory, Supplier supplier) {
         super(name, description);
@@ -35,7 +36,9 @@ public class Product extends BaseModel {
     /**
      * @return defaultPrice of the actual product
      */
-    public float getDefaultPrice() { return defaultPrice; }
+    public float getDefaultPrice() {
+        return defaultPrice;
+    }
 
     public void setDefaultPrice(float defaultPrice) {
         this.defaultPrice = defaultPrice;
@@ -58,6 +61,7 @@ public class Product extends BaseModel {
 
     /**
      * Set the price and the related currency of the actual product
+     *
      * @param price
      * @param currency
      */
@@ -75,6 +79,7 @@ public class Product extends BaseModel {
 
     /**
      * Set the productCategory of the actual product.
+     *
      * @param productCategory
      */
     public void setProductCategory(ProductCategory productCategory) {
@@ -90,6 +95,7 @@ public class Product extends BaseModel {
 
     /**
      * Set the supplier of the actual product.
+     *
      * @param supplier
      */
     public void setSupplier(Supplier supplier) {
@@ -102,17 +108,6 @@ public class Product extends BaseModel {
      */
     @Override
     public String toString() {
-        return String.format("id: %1$d, " +
-                        "name: %2$s, " +
-                        "defaultPrice: %3$f, " +
-                        "defaultCurrency: %4$s, " +
-                        "productCategory: %5$s, " +
-                        "supplier: %6$s",
-                this.id,
-                this.name,
-                this.defaultPrice,
-                this.defaultCurrency.toString(),
-                this.productCategory.getName(),
-                this.supplier.getName());
+        return String.format("id: %1$d, " + "name: %2$s, " + "defaultPrice: %3$f, " + "defaultCurrency: %4$s, " + "productCategory: %5$s, " + "supplier: %6$s", this.id, this.name, this.defaultPrice, this.defaultCurrency.toString(), this.productCategory.getName(), this.supplier.getName());
     }
 }

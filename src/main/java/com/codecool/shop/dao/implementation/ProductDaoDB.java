@@ -5,6 +5,7 @@ import com.codecool.shop.db.ConnectionHandler;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,7 +42,6 @@ public class ProductDaoDB implements ProductDao {
             statement.setString(2, product.getDescription());
             statement.setFloat(3, product.getDefaultPrice());
             statement.setString(4, product.getDefaultCurrency().toString());
-
 
 
             statement.setInt(5, product.getProductCategory().getId());
@@ -129,26 +129,17 @@ public class ProductDaoDB implements ProductDao {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            String sqlStatement = "SELECT * FROM products WHERE id = ?";
+            String sqlStatement = "SELECT id FROM products WHERE supplier_id = ?";
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             statement.setInt(1, supplier.getId());
             statement.execute();
-
             statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             ResultSet resultSet = statement.executeQuery();
 
             List<Product> productList = new ArrayList<>();
 
             while (resultSet.next()) {
-
-                String name = resultSet.getString("name");
-                Float price = resultSet.getFloat("defaultprice");
-                String currency = resultSet.getString("currency");
-                String description = resultSet.getString("description");
-                Integer productcategoryNumber = resultSet.getInt("productcategory_id");
-                ProductCategory productCategory = productCategoryDaoDB.find(productcategoryNumber);
-
-                Product product = new Product(name, price, currency, description, productCategory, supplier);
+                Product product = find(resultSet.getInt("id"));
                 productList.add(product);
             }
             return productList;
@@ -163,7 +154,7 @@ public class ProductDaoDB implements ProductDao {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            String sqlStatement = "SELECT * FROM products WHERE id = ?";
+            String sqlStatement = "SELECT id FROM products WHERE productcategory_id = ?";
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
             statement.setInt(1, productCategory.getId());
             statement.execute();
@@ -174,15 +165,7 @@ public class ProductDaoDB implements ProductDao {
             List<Product> productList = new ArrayList<>();
 
             while (resultSet.next()) {
-
-                String name = resultSet.getString("name");
-                Float price = resultSet.getFloat("defaultprice");
-                String currency = resultSet.getString("currency");
-                String description = resultSet.getString("description");
-                Integer supplierNumber = resultSet.getInt("supplier_id");
-                Supplier supplier = supplierDaoDB.find(supplierNumber);
-
-                Product product = new Product(name, price, currency, description, productCategory, supplier);
+                Product product = find(resultSet.getInt("id"));
                 productList.add(product);
             }
             return productList;

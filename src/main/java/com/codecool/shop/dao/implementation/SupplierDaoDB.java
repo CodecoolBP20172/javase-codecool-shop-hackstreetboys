@@ -20,14 +20,15 @@ public class SupplierDaoDB implements SupplierDao {
     private static SupplierDaoDB instance = null;
 
     /**
-     A private Constructor prevents any other class from instantiating.
+     * A private Constructor prevents any other class from instantiating.
      */
     private SupplierDaoDB() {
     }
 
     /**
-     Creates a Singleton instance.
-     @return the same SupplierDaoDB instance everytime.
+     * Creates a Singleton instance.
+     *
+     * @return the same SupplierDaoDB instance everytime.
      */
     public static SupplierDaoDB getInstance() {
         if (instance == null) {
@@ -37,9 +38,10 @@ public class SupplierDaoDB implements SupplierDao {
     }
 
     /**
-     Add Supplier object to the database.
-     <p>If it gets SQLException throws it to the SupplierDao Interface.</p>
-     @param supplier - is the supplier object, which we want to add to the database.
+     * Add Supplier object to the database.
+     * <p>If it gets SQLException throws it to the SupplierDao Interface.</p>
+     *
+     * @param supplier - is the supplier object, which we want to add to the database.
      */
     @Override
     public void add(Supplier supplier) {
@@ -59,11 +61,12 @@ public class SupplierDaoDB implements SupplierDao {
     }
 
     /**
-     Find Supplier object by it's id in the database.
-     <p>If it gets SQLException throws it to the SupplierDao Interface.</p>
-     @param id - is the id of the Supplier object in the database.
-     @return the Supplier object.
-     @throws IllegalArgumentException if the id is invalid.
+     * Find Supplier object by it's id in the database.
+     * <p>If it gets SQLException throws it to the SupplierDao Interface.</p>
+     *
+     * @param id - is the id of the Supplier object in the database.
+     * @return the Supplier object.
+     * @throws IllegalArgumentException if the id is invalid.
      */
     @Override
     public Supplier find(int id) {
@@ -76,10 +79,7 @@ public class SupplierDaoDB implements SupplierDao {
 
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Supplier supplier = new Supplier(
-                        resultSet.getString("name"),
-                        resultSet.getString("description")
-                );
+                Supplier supplier = new Supplier(resultSet.getString("name"), resultSet.getString("description"));
                 supplier.setId(id);
                 return supplier;
             }
@@ -91,9 +91,10 @@ public class SupplierDaoDB implements SupplierDao {
     }
 
     /**
-     Remove Supplier object by it's id from the database.
-     <p>If it gets SQLException throws it to the SupplierDao Interface.</p>
-     @param id - is the id of the Supplier object in the database.
+     * Remove Supplier object by it's id from the database.
+     * <p>If it gets SQLException throws it to the SupplierDao Interface.</p>
+     *
+     * @param id - is the id of the Supplier object in the database.
      */
     @Override
     public void remove(int id) {
@@ -112,9 +113,10 @@ public class SupplierDaoDB implements SupplierDao {
     }
 
     /**
-     Find Supplier objects in the database and put them into an ArrayList.
-     <p>If it gets SQLException throws it to the SupplierDao Interface.</p>
-     @return the ArrayList within Supplier objects.
+     * Find Supplier objects in the database and put them into an ArrayList.
+     * <p>If it gets SQLException throws it to the SupplierDao Interface.</p>
+     *
+     * @return the ArrayList within Supplier objects.
      */
     @Override
     public List<Supplier> getAll() {

@@ -6,11 +6,15 @@ import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.*;
 import com.codecool.shop.model.Product;
+import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.model.Supplier;
 import com.google.gson.Gson;
 import spark.Request;
 import spark.Response;
 import spark.ModelAndView;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProductController {
 
@@ -35,22 +39,26 @@ public class ProductController {
 
     public static String renderProductsByFilter(Request req, Response res) {
         ProductDao productDataStore = ProductDaoDB.getInstance();
-        List<Product> products = new ArrayList<>(productDataStore.getAll());
+        List<Product> products = productDataStore.getAll();
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoDB.getInstance();
 
-        for (Product product : productDataStore.getAll()) {
+        Supplier supplierByFilter = supplierDataStore.getAll().stream().filter(supplier ->
+                Objects.equals(supplier.getName(), req.queryParams("supplierFilter"))).findFirst().orElse(null);
+        ProductCategory categoryByFilter = productCategoryDataStore.getAll().stream().filter(category ->
+                Objects.equals(category.getName(), req.queryParams("categoryFilter"))).findFirst().orElse(null);
 
-            if ((!Objects.equals(product.getSupplier().getName(), req.queryParams("supplierFilter")))
-                    && (!Objects.equals(req.queryParams("supplierFilter"), "All Suppliers"))) {
-                products.remove(product);
-                continue;
-            }
+        System.out.println(supplierByFilter);
+        System.out.println(categoryByFilter);
 
-            if ((!Objects.equals(product.getProductCategory().getName(), req.queryParams("categoryFilter")))
-                    && (!Objects.equals(req.queryParams("categoryFilter"), "All Categories"))) {
-                products.remove(product);
-            }
-        }
+
+        List<Product> filteredProducts = productDataStore.getAll().stream().filter(product ->
+                (product.getSupplier().getId() == supplierByFilter.getId() || Objects.equals(req.queryParams("supplierFilter"), "All Suppliers"))
+                        && (product.getProductCategory().getId() == categoryByFilter.getId() || Objects.equals(req.queryParams("categoryFilter"), "All Categories"))).collect(Collectors.toList());
+
+
+        System.out.println(filteredProducts);
         Gson gson = new Gson();
-        return gson.toJson(products);
+        return gson.toJson(filteredProducts);
     }
 }

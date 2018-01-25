@@ -15,12 +15,14 @@ public interface SupplierDao {
 
     /**
      * Method signature of adding suppliers.
+     *
      * @param supplier this is the supplier you would like to add
      */
     void add(Supplier supplier);
 
     /**
      * Method signature of finding suppliers
+     *
      * @param id unique identifier that belongs to one specific supplier what you would like to find
      * @return the supplier which belongs to that unique id
      */
@@ -28,12 +30,14 @@ public interface SupplierDao {
 
     /**
      * Method signature of removing suppliers
+     *
      * @param id unique identifier that belongs to one specific supplier what you would like to remove
      */
     void remove(int id);
 
     /**
      * Method signature of accessing all suppliers
+     *
      * @return all of the suppliers
      */
     List<Supplier> getAll();

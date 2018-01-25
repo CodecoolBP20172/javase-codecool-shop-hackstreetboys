@@ -16,7 +16,8 @@ public class Supplier extends BaseModel {
 
     /**
      * Constructor, you can set the name and the description.
-     * @param name the supplier's name (declared in BaseModel)
+     *
+     * @param name        the supplier's name (declared in BaseModel)
      * @param description information about the supplier (declared in BaseModel)
      */
     public Supplier(String name, String description) {
@@ -28,12 +29,6 @@ public class Supplier extends BaseModel {
      * @return the supplier's name, id and description in printable format
      */
     public String toString() {
-        return String.format("id: %1$d, " +
-                        "name: %2$s, " +
-                        "description: %3$s",
-                this.id,
-                this.name,
-                this.description
-        );
+        return String.format("id: %1$d, " + "name: %2$s, " + "description: %3$s", this.id, this.name, this.description);
     }
 }

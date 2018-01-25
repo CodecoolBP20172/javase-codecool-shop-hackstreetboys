@@ -21,14 +21,15 @@ public class SupplierDaoMem implements SupplierDao {
 
 
     /**
-     A private Constructor prevents any other class from instantiating.
+     * A private Constructor prevents any other class from instantiating.
      */
     private SupplierDaoMem() {
     }
 
     /**
-     Creates a Singleton instance.
-     @return the same SupplierDaoMem instance everytime.
+     * Creates a Singleton instance.
+     *
+     * @return the same SupplierDaoMem instance everytime.
      */
     public static SupplierDaoMem getInstance() {
         if (instance == null) {
@@ -38,31 +39,32 @@ public class SupplierDaoMem implements SupplierDao {
     }
 
     /**
-     Add Supplier object to DATA.
-     <p>DATA is an ArrayList, which stores Supplier objects.</p>
-     @param supplier - is the supplier object, which we want to add to DATA.
+     * Add Supplier object to DATA.
+     * <p>DATA is an ArrayList, which stores Supplier objects.</p>
+     *
+     * @param supplier - is the supplier object, which we want to add to DATA.
      */
     @Override
     public void add(Supplier supplier) {
-        if ( supplier != null){
+        if (supplier != null) {
             supplier.setId(maxId.getAndIncrement());
             DATA.add(supplier);
-        }
-        else {
+        } else {
             throw new NullPointerException();
         }
     }
 
     /**
-     Find Supplier object by it's id in DATA.
-     <p>DATA is an ArrayList, which stores Supplier objects.</p>
-     @param id - id of the Supplier object.
-     @return the Supplier object.
-     @throws IllegalArgumentException if id is invalid
+     * Find Supplier object by it's id in DATA.
+     * <p>DATA is an ArrayList, which stores Supplier objects.</p>
+     *
+     * @param id - id of the Supplier object.
+     * @return the Supplier object.
+     * @throws IllegalArgumentException if id is invalid
      */
     @Override
     public Supplier find(int id) {
-        if (id <= maxId.intValue() && id >= 1 ) {
+        if (id <= maxId.intValue() && id >= 1) {
             return DATA.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
         } else {
             throw new IllegalArgumentException();
@@ -70,9 +72,10 @@ public class SupplierDaoMem implements SupplierDao {
     }
 
     /**
-     Remove Supplier object by it's id from DATA.
-     <p>DATA is an ArrayList, which stores Supplier objects.</p>
-     @param id - is the id of the Supplier object.
+     * Remove Supplier object by it's id from DATA.
+     * <p>DATA is an ArrayList, which stores Supplier objects.</p>
+     *
+     * @param id - is the id of the Supplier object.
      */
     @Override
     public void remove(int id) {
@@ -80,8 +83,9 @@ public class SupplierDaoMem implements SupplierDao {
     }
 
     /**
-     Gets all Supplier object in DATA.
-     @return DATA, which stores all Supplier objects.
+     * Gets all Supplier object in DATA.
+     *
+     * @return DATA, which stores all Supplier objects.
      */
     @Override
     public List<Supplier> getAll() {

@@ -31,6 +31,7 @@ public class OrderDaoDB implements OrderDao {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
+                //ha nincs még ordere itt kell majd csinálni, ha van akkor összerakni az objectet és azt adni át
                 Integer user_id = resultSet.getInt("user_id");
                 Order order = new Order(user_id);
                 return order;
@@ -45,6 +46,8 @@ public class OrderDaoDB implements OrderDao {
     @Override
     public void add(Order order) {
 
+        //belerakni az orders táblába ha még nincs
+
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
             String sqlStatement = "INSERT INTO orders (user_id, numberOfProducts, totalPrice) VALUES (?, ?, ?);";
@@ -54,7 +57,7 @@ public class OrderDaoDB implements OrderDao {
             statement.setFloat(3, order.getTotalPrice());
             statement.execute();
 
-            for(Map.Entry<Product, Integer> entry : order.getAll().entrySet()) {
+            for (Map.Entry<Product, Integer> entry : order.getAll().entrySet()) {
                 Integer product_id = entry.getKey().getId();
                 Integer quantity = entry.getValue();
 
@@ -83,9 +86,7 @@ public class OrderDaoDB implements OrderDao {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Order order= new Order (
-                        resultSet.getInt("user_id")
-                );
+                Order order = new Order(resultSet.getInt("user_id"));
 
                 String sqlStatement2 = "SELECT * FROM ordered_products WHERE order_id = ?";
                 PreparedStatement statement2 = connectionHandler.getConnection().prepareStatement(sqlStatement2);
