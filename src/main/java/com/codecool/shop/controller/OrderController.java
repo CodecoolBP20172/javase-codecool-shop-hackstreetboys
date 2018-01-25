@@ -17,14 +17,21 @@ public class OrderController {
 
     public static String renderOrder(Request req, Response res, Integer userId) {
 
+
         Integer productId = Integer.valueOf(req.queryParams("productId"));
         Product product = ProductDaoDB.getInstance().find(productId);
-        Order order = OrderDaoDB.getInstance().getOrderForUser(userId);
-
+        Order order = OrderDaoDB.getInstance().find(userId);
         order.add(product);
 
+
+
+        OrderDaoDB.getInstance().add(order);
+
+        System.out.println(order);
         Gson gson = new Gson();
         return gson.toJson(order.getNumberOfProducts());
+
+        //order.add(product) only for mem, cos thats not clean
     }
 
     public static Map renderModal(Request req, Response res, Integer userId) {

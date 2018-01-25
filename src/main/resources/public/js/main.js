@@ -19,7 +19,6 @@ function addEventListenerToCartModal() {
 
 function addEventListenerToFilterButton() {
     $("#button").click(function () {
-        alert("VALAMI BAZD MEG")
         $.post("/filter",
             {
                 categoryFilter: $("#categoryFilter").find("option:selected").text(),

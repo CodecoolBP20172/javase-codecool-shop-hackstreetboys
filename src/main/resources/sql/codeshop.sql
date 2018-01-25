@@ -2,13 +2,14 @@ ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT IF EXISTS pk_users_id CA
 ALTER TABLE IF EXISTS ONLY public.products DROP CONSTRAINT IF EXISTS pk_products_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.suppliers DROP CONSTRAINT IF EXISTS pk_suppliers_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.productcategories DROP CONSTRAINT IF EXISTS pk_productcategories_id CASCADE;
-ALTER TABLE IF EXISTS ONLY public.orders DROP CONSTRAINT IF EXISTS pk_order_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.orders DROP CONSTRAINT IF EXISTS pk_orders_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.ordered_products DROP CONSTRAINT IF EXISTS pk_ordered_products_id CASCADE;
 
 
 -- DROP foreign keys
 ALTER TABLE IF EXISTS ONLY public.products DROP CONSTRAINT IF EXISTS fk_suppliers_id CASCADE;
-ALTER TABLE IF EXISTS ONLY public.products DROP CONSTRAINT IF EXISTS fk_productcategory_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.products DROP CONSTRAINT IF EXISTS fk_productcategories_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.products DROP CONSTRAINT IF EXISTS fk_orders_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.orders DROP CONSTRAINT IF EXISTS fk_user_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.ordered_products DROP CONSTRAINT IF EXISTS fk_product_id CASCADE;
 ALTER TABLE IF EXISTS ONLY public.ordered_products DROP CONSTRAINT IF EXISTS fk_order_id CASCADE;
@@ -55,7 +56,8 @@ CREATE TABLE public.products
   defaultprice real,
   currency varchar,
   productcategory_id integer NOT NULL,
-  supplier_id integer NOT NULL
+  supplier_id integer NOT NULL,
+  order_id integer NOT NULL
 );
 
 
@@ -76,7 +78,6 @@ CREATE TABLE public.ordered_products
 (
   id serial NOT NULL UNIQUE ,
   product_id integer NOT NULL,
-  quantity integer NOT NULL,
   order_id integer NOT NULL
 );
 
@@ -108,6 +109,9 @@ ALTER TABLE ONLY products
 ALTER TABLE ONLY products
     ADD CONSTRAINT fk_productcategories_id FOREIGN KEY (productcategory_id) REFERENCES productcategories(id);
 
+ALTER TABLE ONLY products
+    ADD CONSTRAINT fk_orders_id FOREIGN KEY (order_id) REFERENCES orders(id);
+
 ALTER TABLE ONLY orders
     ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
 
@@ -132,21 +136,21 @@ INSERT INTO productcategories VALUES(2, 'Phone', 'Hardware', 'A phone computer')
 INSERT INTO productcategories VALUES(3, 'Computer', 'Hardware', 'A computer is a  computer');
 SELECT pg_catalog.setval('productcategories_id_seq', 3, true);
 
-INSERT INTO products VALUES (1, 'Amazon Fire', 'Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.', 49.9, 'USD', 2, 1);
-INSERT INTO products VALUES (2, 'Lenovo IdeaPad Miix 700', 'Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.', 479, 'USD', 1, 2);
-INSERT INTO products VALUES (3, 'Amazon Fire HD 8', 'Amazons latest Fire HD 8 tablet is a great value for media consumption.', 89, 'USD', 1, 1);
-INSERT INTO products VALUES (4, 'Apple Iphone 5S', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.', 178, 'USD', 2, 3);
-INSERT INTO products VALUES (5, 'Apple MacBook Air', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.', 898, 'USD', 3, 3);
-INSERT INTO products VALUES (6, 'Apple Ipad', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.', 311, 'USD', 1, 3);
-INSERT INTO products VALUES (7, 'Nokia 3310', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.', 60, 'USD', 2, 4);
-SELECT pg_catalog.setval('products_id_seq', 7, true);
-
 INSERT INTO users VALUES  (1, 'Dani(k)', '1111');
 SELECT pg_catalog.setval('users_id_seq', 1, true);
 
 INSERT INTO  orders VALUES  (1, 1, 0, 0);
 SELECT pg_catalog.setval('orders_id_seq', 1, true);
 
-INSERT INTO ordered_products VALUES (1,7,1,1);
+INSERT INTO products VALUES (1, 'Amazon Fire', 'Fantastic price. Large content ecosystem. Good parental controls. Helpful technical support.', 49.9, 'USD', 2, 1, 1);
+INSERT INTO products VALUES (2, 'Lenovo IdeaPad Miix 700', 'Keyboard cover is included. Fanless Core m5 processor. Full-size USB ports. Adjustable kickstand.', 479, 'USD', 1, 2, 1);
+INSERT INTO products VALUES (3, 'Amazon Fire HD 8', 'Amazons latest Fire HD 8 tablet is a great value for media consumption.', 89, 'USD', 1, 1, 1);
+INSERT INTO products VALUES (4, 'Apple Iphone 5S', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.', 178, 'USD', 2, 3, 1);
+INSERT INTO products VALUES (5, 'Apple MacBook Air', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.', 898, 'USD', 3, 3, 1);
+INSERT INTO products VALUES (6, 'Apple Ipad', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.', 311, 'USD', 1, 3, 1);
+INSERT INTO products VALUES (7, 'Nokia 3310', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.', 60, 'USD', 2, 4, 1);
+SELECT pg_catalog.setval('products_id_seq', 7, true);
+
+/*INSERT INTO ordered_products VALUES (1,7,1,1);*/
 SELECT pg_catalog.setval('ordered_products_id_seq', 1, true);
 

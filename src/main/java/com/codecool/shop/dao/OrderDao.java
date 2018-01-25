@@ -12,6 +12,8 @@ import java.util.List;
  * <p>Here you can add / find / remove orders and also you can access all of them.</p>
  */
 public interface OrderDao {
+    Order getOrderForUser(Integer userId);
+
     /**
      * Method signature of adding orders
      *
@@ -40,5 +42,6 @@ public interface OrderDao {
      * @return all of the orders
      */
     List<Order> getAll();
+
 
 }

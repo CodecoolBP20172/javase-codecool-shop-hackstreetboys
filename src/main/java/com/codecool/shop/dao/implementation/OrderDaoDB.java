@@ -6,10 +6,8 @@ import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.lang.AutoCloseable;
-import java.util.Map;
 
 public class OrderDaoDB implements OrderDao {
 
@@ -22,8 +20,8 @@ public class OrderDaoDB implements OrderDao {
         return instance;
     }
 
+    @Override
     public Order getOrderForUser(Integer userId) {
-
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
             String sqlStatement = "SELECT * FROM orders WHERE user_id =  ?";
@@ -31,9 +29,9 @@ public class OrderDaoDB implements OrderDao {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                //ha nincs még ordere itt kell majd csinálni, ha van akkor összerakni az objectet és azt adni át
                 Integer user_id = resultSet.getInt("user_id");
                 Order order = new Order(user_id);
+                order.setId(resultSet.getInt("id"));
                 return order;
             }
             throw new IllegalArgumentException("Invalid id");
@@ -46,28 +44,23 @@ public class OrderDaoDB implements OrderDao {
     @Override
     public void add(Order order) {
 
-        //belerakni az orders táblába ha még nincs
-
+        remove(order.getId());
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
-
-            String sqlStatement = "INSERT INTO orders (user_id, numberOfProducts, totalPrice) VALUES (?, ?, ?);";
-            PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
-            statement.setInt(1, order.getUserId());
-            statement.setInt(2, order.getNumberOfProducts());
-            statement.setFloat(3, order.getTotalPrice());
-            statement.execute();
 
             for (Map.Entry<Product, Integer> entry : order.getAll().entrySet()) {
                 Integer product_id = entry.getKey().getId();
                 Integer quantity = entry.getValue();
 
-                String sqlStatement2 = "INSERT INTO ordered_products (product_id, quantity, order_id) VALUES (?, ?, ?);";
-                PreparedStatement statement2 = connectionHandler.getConnection().prepareStatement(sqlStatement2);
+                for (int i = 0; i < quantity; i++) {
+                    String sqlStatement = "INSERT INTO ordered_products (product_id, order_id) VALUES (?, ?);";
+                    PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
 
-                statement2.setInt(1, product_id);
-                statement2.setInt(2, quantity);
-                statement2.setInt(3, order.getId());
-                statement2.execute();
+                    System.out.println(product_id);
+                    statement.setInt(1, product_id);
+                    statement.setInt(2, order.getId());
+                    statement.execute();
+                }
+
             }
 
         } catch (SQLException e) {
@@ -76,33 +69,31 @@ public class OrderDaoDB implements OrderDao {
     }
 
 
+
+
     @Override
-    public Order find(int id) {
+    public Order find(int userId) {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            String sqlStatement = "SELECT * FROM orders WHERE user_id =  ?";
+            Order order = getOrderForUser(userId);
+            Map<Product, Integer> products = new HashMap<>();
+
+            String sqlStatement = "SELECT * FROM ordered_products WHERE order_id = ?";
+
             PreparedStatement statement = connectionHandler.getConnection().prepareStatement(sqlStatement);
-            statement.setInt(1, id);
+            statement.setInt(1, order.getId());
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                Order order = new Order(resultSet.getInt("user_id"));
 
-                String sqlStatement2 = "SELECT * FROM ordered_products WHERE order_id = ?";
-                PreparedStatement statement2 = connectionHandler.getConnection().prepareStatement(sqlStatement2);
-                statement2.setInt(1, order.getId());
-                ResultSet resultSet2 = statement2.executeQuery();
-                while (resultSet2.next()) {
-                    Integer product_id = resultSet2.getInt("product_id");
-                    Integer quantity = resultSet2.getInt("quantity");
-                    Product product = ProductDaoDB.getInstance().find(product_id);
-                    order.getAll().put(product, quantity);
 
-                }
+            while (resultSet.next()) {
+
+                Product product = ProductDaoDB.getInstance().find(resultSet.getInt("product_id"));
+                order.add(product);
 
                 return order;
             }
-            throw new IllegalArgumentException("Invalid id");
+            return order;
 
         } catch (SQLException e) {
             throw new IllegalArgumentException("Connection is not working", e);
@@ -110,13 +101,14 @@ public class OrderDaoDB implements OrderDao {
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(int orderId) {
 
         try (ConnectionHandler connectionHandler = new ConnectionHandler()) {
 
-            PreparedStatement statement = connectionHandler.getConnection().prepareStatement("DELETE FROM orders WHERE user_id = ?");
-            statement.setInt(1, id);
+            PreparedStatement statement = connectionHandler.getConnection().prepareStatement("DELETE FROM ordered_products WHERE order_id = ?");
+            statement.setInt(1, orderId);
             statement.execute();
+
 
         } catch (SQLException e) {
             throw new IllegalArgumentException("Invalid order or null", e);

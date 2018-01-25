@@ -49,6 +49,7 @@ public class Main {
         ProductDao productDataStore = ProductDaoDB.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoDB.getInstance();
         SupplierDao supplierDataStore = SupplierDaoDB.getInstance();
+        OrderDao orderDataStore = OrderDaoDB.getInstance();
 
         //setting up a new supplier
         Supplier amazon = new Supplier("Amazon", "Digital content and services");
@@ -88,6 +89,7 @@ public class Main {
 
         //setting up default order
         Order order = new Order(userId);
+        orderDataStore.add(order);
     }
 
 

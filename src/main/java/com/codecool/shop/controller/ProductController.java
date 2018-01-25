@@ -5,6 +5,7 @@ import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.implementation.*;
+import com.codecool.shop.model.Order;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -29,7 +30,8 @@ public class ProductController {
         params.put("categories", productCategoryDataStore.getAll());
         params.put("suppliers", supplierDataStore.getAll());
         params.put("products", productDataStore.getAll());
-        params.put("numberOfItemInOrder", orderDataStore.find(userId).getNumberOfProducts());
+        //params.put("numberOfItemInOrder", orderDataStore.getOrderForUser(userId).getNumberOfProducts());
+        params.put("numberOfItemInOrder", 0);
 
         return new ModelAndView(params, "product/index");
     }

@@ -3,6 +3,7 @@ package com.codecool.shop.model;
 import com.codecool.shop.dao.implementation.OrderDaoMem;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is the Order class based on BaseModel.
@@ -17,6 +18,7 @@ public class Order extends BaseModel {
     private HashMap<Product, Integer> products = new HashMap<>();
     private Integer userId;
     private Integer numberOfProducts = 0;
+
     private Float totalPrice = 0f;
 
 
@@ -28,7 +30,6 @@ public class Order extends BaseModel {
     public Order(Integer userId) {
         super("order");
         this.userId = userId;
-        OrderDaoMem.getInstance().add(this);
     }
 
     /**
@@ -40,7 +41,7 @@ public class Order extends BaseModel {
         products.merge(product, 1, (a, b) -> a + b);
         numberOfProducts++;
         totalPrice += product.getDefaultPrice();
-    }
+        }
 
     /**
      * You can remove product from the order
@@ -96,4 +97,17 @@ public class Order extends BaseModel {
         return totalPrice;
     }
 
+
+    public void setNumberOfProducts(Integer numberOfProducts) {
+        this.numberOfProducts = numberOfProducts;
+    }
+
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" + "products=" + products + ", userId=" + userId + ", numberOfProducts=" + numberOfProducts + ", totalPrice=" + totalPrice + '}';
+    }
 }
